@@ -1,7 +1,6 @@
-*/ main.cu */
-Martin ist doof!
-gar net du bob[1] da drueben!!!!
-lalalal
+#include "factorization.h"
+#include "rsacalculation.h"
 
---------
-[1] bob : Auch umgangssprchlich als Jochen bezeichnet.
+int main (int argc, const char* argv[]) {
+
+}
