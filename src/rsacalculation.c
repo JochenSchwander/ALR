@@ -1,9 +1,9 @@
 #include "rsacalculation.h"
 
-long calculatePrivateKey(long e, long p, long q) {
-	long phiN = (p - 1) * (q - 1);
+long calculatePrivateKey(long publicKey, long primeOne, long primeTwo) {
+	long phiN = (primeOne - 1) * (primeTwo - 1);
 
-	long a = e;
+	long a = publicKey;
 	long b = phiN;
 	long x = 1, y = 0;
 	long xLast = 0, yLast = 1;
