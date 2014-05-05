@@ -1,6 +1,7 @@
-#include "factorization.h"
-#include "rsacalculation.h"
 
-int main (int argc, const char* argv[]) {
-
+#include "stdio.h"
+int main()
+{
+printf("Hello, world\n");
+	return 0;
 }
