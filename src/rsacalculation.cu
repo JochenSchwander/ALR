@@ -2,7 +2,6 @@
 
 long calculatePrivateKey(long publicKey, long primeOne, long primeTwo) {
 	long phiN = (primeOne - 1) * (primeTwo - 1);
-
 	long a = publicKey;
 	long b = phiN;
 	long x = 1, y = 0;
@@ -19,7 +18,7 @@ long calculatePrivateKey(long publicKey, long primeOne, long primeTwo) {
 		b = a, a = r;
 	}
 
-	if (xLast < 0l) {
+	if (xLast < 0) {
 		xLast += phiN;
 	}
 
