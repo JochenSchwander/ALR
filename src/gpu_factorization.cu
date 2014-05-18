@@ -1,13 +1,13 @@
 #include "gpu_factorization.h"
 
-__global__ void gpu_factorization(long* n, long* p, long* q) {
+__global__ void gpu_factorization(__int64* n, __int64* p, __int64* q) {
 
 
-	long local_n = *n;
-	long i;
-	long idx = blockIdx.x * blockDim.x + threadIdx.x;
-	long step_size = blockDim.x*gridDim.x;
-	long steps = local_n/2;
+	__int64 local_n = *n;
+	__int64 i;
+	__int64 idx = blockIdx.x * blockDim.x + threadIdx.x;
+	__int64 step_size = blockDim.x*gridDim.x;
+	__int64 steps = local_n/2;
 	//TODO: n = sqrt(n) !
 
 	for (i=3+idx; i<steps; i += step_size)
