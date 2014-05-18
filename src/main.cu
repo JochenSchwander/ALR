@@ -1,5 +1,6 @@
 #include "stdio.h"
-#include "factorization.h"
+//#include "factorization.h"
+#include "pollard_p1_factorization.h"
 #include "gpu_factorization.h"
 #include "rsacalculation.h"
 #include <cuda.h>
@@ -30,7 +31,8 @@ int main()
 
 	printf("n = %I64d\n", *n);
 	start = clock();
-	factorization(*n, p, q);
+	//factorization(*n, p, q);
+	pollard_p1_factorization(*n, p, q);
 	end = clock();
 	printf("p = %I64d; q = %I64d in %lf seconds\n", *p, *q, (end-start)/(double)CLOCKS_PER_SEC);
 	d = calculatePrivateKey(e,*p,*q);
