@@ -7,4 +7,6 @@ void pollard_p1_factorization(long long int n, long long int* p, long long int* 
 
 long long int pollard_p1_factor(long long int n, uint16_t *primes, uint16_t primes_length);
 
+void getAllPrimNumbers(uint16_t *primes, uint16_t *primes_length);
+
 #endif
