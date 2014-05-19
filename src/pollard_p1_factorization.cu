@@ -5,13 +5,13 @@
 #include <stdio.h>
 
 
-void pollard_p1_factorization(long long int n, long long int* p, long long int* q, uint16_t *primes, uint16_t primes_length) {
+void pollard_p1_factorization(long long int n, long long int* p, long long int* q, unsigned int *primes, unsigned int primes_length) {
 	*p = pollard_p1_factor(n, primes, primes_length);
 	*q = n / *p;
 }
 
 
-long long int pollard_p1_factor(long long int n, uint16_t *primes, uint16_t primes_length) {
+long long int pollard_p1_factor(long long int n, unsigned int *primes, unsigned int primes_length) {
 	long long int b_max = 1000000;
 	long long int a_max = 1000;
 	long long int b, e, p, i, a, g;

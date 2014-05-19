@@ -7,20 +7,17 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 #include <time.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-void read_primes(uint16_t *primes, uint16_t primes_length);
+void read_primes(unsigned int *primes);
 
 int main() {
-	uint16_t primes_length = 78499;
-	uint16_t *primes = (uint16_t *) malloc(sizeof(uint16_t) * primes_length);
-	read_primes(primes, primes_length);
+	unsigned int primes_length = 78498;
+	unsigned int *primes = (unsigned int *) malloc(sizeof(unsigned int) * primes_length);
 
 	//CUDA
 	long long int *dev_n, *dev_p, *dev_q;
-	int size = sizeof(long long int);
 	//time measurement
 	clock_t start, end;
 
@@ -32,6 +29,9 @@ int main() {
 	host_p = (long long int*)malloc(sizeof(long long int));
 	host_q = (long long int*)malloc(sizeof(long long int));
 
+
+	
+	read_primes(primes);
 
 	*n = 902491;
 	e = 5;
@@ -71,17 +71,18 @@ int main() {
 	return 0;
 }
 
-void read_primes(uint16_t *primes, uint16_t primes_length) {
+void read_primes(unsigned int *primes) {
 	FILE *datei;
-	int prime;
+	unsigned int prime;
 	int count = 0; 
 	/* Zum Lesen öffnen */ 
 	datei = fopen("src/primzahlenbis1millionen.txt", "r");
-	while ((fscanf(datei, "%d,", &prime)) != EOF) { 
-		primes[count++] = (uint16_t) prime; 
+	while ((fscanf(datei, "%u,", &prime)) != EOF) { 
+		primes[count++] = prime; 
 	} 
-	fclose(datei); // Loop over strings
-	for (int i = 0; i < 78499; i++) { 
-		printf("%d \n", primes[i]);
+	fclose(datei); 
+	// Loop over strings
+	for (int i = 0; i < 78498; i++) { 
+		printf("%u \n", primes[i]);
 	}
 }
