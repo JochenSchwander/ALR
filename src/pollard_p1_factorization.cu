@@ -14,25 +14,25 @@ void pollard_p1_factorization(long long int n, long long int* p, long long int* 
 
 
 long long int pollard_p1_factor(long long int n) {
-	long long int bound = n / 2;
+	long long int bound = n / 2; //quadratwurzel oder anders kleiner?
 	long long int a, i, mult, b;
 
 	for (a = 2; a < bound; a++) {
 #ifdef DEBUG_POLLARD_P1
-		printf("a = %I64d\n", a);
+		printf("a = %lld\n", a);
 #endif
 		mult = a;
 		for (i = 1; i < bound; i++) {
 #ifdef DEBUG_POLLARD_P1
-			printf("i = %I64d\n", i);
+			printf("i = %lld\n", i);
 #endif
 			mult = power_mod(mult, i, n);
 #ifdef DEBUG_POLLARD_P1
-			printf("mult = %I64d\n", mult);
+			printf("mult = %lld\n", mult);
 #endif
 			b = euclidean_gcd(mult - 1, n);
 #ifdef DEBUG_POLLARD_P1
-			printf("b = %I64d\n", b);
+			printf("b = %lld\n", b);
 #endif
 			if (b > 1) {
 				if (b == n) {

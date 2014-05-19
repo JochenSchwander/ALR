@@ -29,14 +29,14 @@ int main()
 	e = 5;
 
 
-	printf("n = %I64d\n", *n);
+	printf("n = %lld\n", *n);
 	start = clock();
 	//factorization(*n, p, q);
 	pollard_p1_factorization(*n, p, q);
 	end = clock();
-	printf("p = %I64d; q = %I64d in %lf seconds\n", *p, *q, (end-start)/(double)CLOCKS_PER_SEC);
+	printf("p = %lld; q = %lld in %lf seconds\n", *p, *q, (end-start)/(double)CLOCKS_PER_SEC);
 	d = calculatePrivateKey(e,*p,*q);
-	printf("d = %I64d\n", d);
+	printf("d = %lld\n", d);
 
 
 	//allocate the momory on th GPU
@@ -54,7 +54,7 @@ int main()
 	cudaMemcpy( host_p, dev_p, sizeof(long long int),	cudaMemcpyDeviceToHost);
 	cudaMemcpy( host_q, dev_q, sizeof(long long int),	cudaMemcpyDeviceToHost);
 
-	printf("p = %I64d; q = %I64d in %lf seconds\n", *host_p, *host_q, (end-start)/(double)CLOCKS_PER_SEC);
+	printf("p = %lld; q = %lld in %lf seconds\n", *host_p, *host_q, (end-start)/(double)CLOCKS_PER_SEC);
 
 	cudaFree(dev_p);
 	cudaFree(dev_q);
