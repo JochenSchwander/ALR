@@ -1,12 +1,12 @@
 #include "rsacalculation.h"
 
-__int64 calculatePrivateKey(__int64 publicKey, __int64 primeOne, __int64 primeTwo) {
-	__int64 phiN = (primeOne - 1) * (primeTwo - 1);
-	__int64 a = publicKey;
-	__int64 b = phiN;
-	__int64 x = 1, y = 0;
-	__int64 xLast = 0, yLast = 1;
-	__int64 q, r, m, n;
+long long int calculatePrivateKey(long long int publicKey, long long int primeOne, long long int primeTwo) {
+	long long int phiN = (primeOne - 1) * (primeTwo - 1);
+	long long int a = publicKey;
+	long long int b = phiN;
+	long long int x = 1, y = 0;
+	long long int xLast = 0, yLast = 1;
+	long long int q, r, m, n;
 
 	while (a != 0) {
 		q = b / a;

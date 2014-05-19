@@ -1,8 +1,8 @@
 #ifndef MATH_STUFF_H
 #define MATH_STUFF_H
 
-__int64 euclidean_gcd(__int64 a, __int64 b);
+long long int euclidean_gcd(long long int a, long long int b);
 
-__int64 power_mod(__int64 base, __int64 exponent, __int64 modulus);
+long long int power_mod(long long int base, long long int exponent, long long int modulus);
 
 #endif

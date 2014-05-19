@@ -1,8 +1,8 @@
 #ifndef POLLARD_P1_FACTORIZATION_H
 #define POLLARD_P1_FACTORIZATION_H
 
-void pollard_p1_factorization(__int64 n, __int64* p, __int64* q);
+void pollard_p1_factorization(long long int n, long long int* p, long long int* q);
 
-__int64 pollard_p1_factor(__int64 n);
+long long int pollard_p1_factor(long long int n);
 
 #endif

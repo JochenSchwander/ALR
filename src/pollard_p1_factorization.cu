@@ -7,15 +7,15 @@
 #endif
 
 
-void pollard_p1_factorization(__int64 n, __int64* p, __int64* q) {
+void pollard_p1_factorization(long long int n, long long int* p, long long int* q) {
 	*p = pollard_p1_factor(n);
 	*q = n / *p;
 }
 
 
-__int64 pollard_p1_factor(__int64 n) {
-	__int64 bound = n / 2;
-	__int64 a, i, mult, b;
+long long int pollard_p1_factor(long long int n) {
+	long long int bound = n / 2;
+	long long int a, i, mult, b;
 
 	for (a = 2; a < bound; a++) {
 #ifdef DEBUG_POLLARD_P1

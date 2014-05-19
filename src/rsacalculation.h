@@ -1,6 +1,6 @@
 #ifndef RSACALCULATION_H
 #define RSACALCULATION_H
 
-__int64 calculatePrivateKey(__int64 e, __int64 p, __int64 q);
+long long int calculatePrivateKey(long long int e, long long int p, long long int q);
 
 #endif

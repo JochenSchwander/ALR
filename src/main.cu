@@ -11,18 +11,18 @@
 int main()
 {
 	//CUDA
-	__int64 *dev_n, *dev_p, *dev_q;
-	int size = sizeof(__int64);
+	long long int *dev_n, *dev_p, *dev_q;
+	int size = sizeof(long long int);
 	//time measurement
 	clock_t start, end;
 
-	__int64 *p, *host_p, *host_q, *q, *n, e, d;
-	p = (__int64*)malloc(sizeof(__int64));
-	q = (__int64*)malloc(sizeof(__int64));
-	n = (__int64*)malloc(sizeof(__int64));
+	long long int *p, *host_p, *host_q, *q, *n, e, d;
+	p = (long long int*)malloc(sizeof(long long int));
+	q = (long long int*)malloc(sizeof(long long int));
+	n = (long long int*)malloc(sizeof(long long int));
 
-	host_p = (__int64*)malloc(sizeof(__int64));
-	host_q = (__int64*)malloc(sizeof(__int64));
+	host_p = (long long int*)malloc(sizeof(long long int));
+	host_q = (long long int*)malloc(sizeof(long long int));
 
 
 	*n = 902491;
@@ -40,9 +40,9 @@ int main()
 
 
 	//allocate the momory on th GPU
-	cudaMalloc((void **) &dev_n, sizeof(__int64));
-	cudaMalloc((void **) &dev_p, sizeof(__int64));
-	cudaMalloc((void **) &dev_q, sizeof(__int64));
+	cudaMalloc((void **) &dev_n, sizeof(long long int));
+	cudaMalloc((void **) &dev_p, sizeof(long long int));
+	cudaMalloc((void **) &dev_q, sizeof(long long int));
 
 	cudaMemcpy( dev_n, n, size,cudaMemcpyHostToDevice);
 
@@ -51,8 +51,8 @@ int main()
 	cudaDeviceSynchronize();
 	end = clock();
 
-	cudaMemcpy( host_p, dev_p, sizeof(__int64),	cudaMemcpyDeviceToHost);
-	cudaMemcpy( host_q, dev_q, sizeof(__int64),	cudaMemcpyDeviceToHost);
+	cudaMemcpy( host_p, dev_p, sizeof(long long int),	cudaMemcpyDeviceToHost);
+	cudaMemcpy( host_q, dev_q, sizeof(long long int),	cudaMemcpyDeviceToHost);
 
 	printf("p = %I64d; q = %I64d in %lf seconds\n", *host_p, *host_q, (end-start)/(double)CLOCKS_PER_SEC);
 

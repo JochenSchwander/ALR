@@ -1,6 +1,6 @@
 #ifndef GPU_FACTORIZATION_H
 #define GPU_FACTORIZATION_H
 
-__global__ void gpu_factorization(__int64* n, __int64* p, __int64* q);
+__global__ void gpu_factorization(long long int* n, long long int* p, long long int* q);
 
 #endif

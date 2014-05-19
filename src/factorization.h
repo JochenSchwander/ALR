@@ -1,6 +1,6 @@
 #ifndef FACTORIZATION_H
 #define FACTORIZATION_H
 
-void factorization(__int64 n, __int64* p, __int64* q);
+void factorization(long long int n, long long int* p, long long int* q);
 
 #endif
