@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define CLOCKS_PER_SEC 1000
+
 void read_primes(unsigned int *primes);
 
 int main() {
@@ -75,14 +77,10 @@ void read_primes(unsigned int *primes) {
 	FILE *datei;
 	unsigned int prime;
 	int count = 0; 
-	/* Zum Lesen öffnen */ 
-	datei = fopen("src/primzahlenbis1millionen.txt", "r");
+	
+	datei = fopen("src/primes.txt", "r");
 	while ((fscanf(datei, "%u,", &prime)) != EOF) { 
 		primes[count++] = prime; 
 	} 
 	fclose(datei); 
-	// Loop over strings
-	for (int i = 0; i < 78498; i++) { 
-		printf("%u \n", primes[i]);
-	}
 }
