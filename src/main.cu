@@ -81,7 +81,7 @@ void read_primes(uint16_t *primes, uint16_t primes_length) {
 		primes[count++] = (uint16_t) prime; 
 	} 
 	fclose(datei); // Loop over strings
-	for (int i = 0; i < 78499; i++) { 
+	for (int i = 0; i < 78498; i++) {
 		printf("%d \n", primes[i]);
 	}
 }
