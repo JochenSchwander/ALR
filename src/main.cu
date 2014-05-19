@@ -7,11 +7,17 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 #include <time.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
 
+void read_primes(uint16_t *primes, uint16_t primes_length);
 
+int main() {
+	uint16_t primes_length = 78499;
+	uint16_t *primes = (uint16_t *) malloc(sizeof(uint16_t) * primes_length);
+	read_primes(primes, primes_length);
 
-int main()
-{
 	//CUDA
 	long long int *dev_n, *dev_p, *dev_q;
 	int size = sizeof(long long int);
@@ -34,7 +40,7 @@ int main()
 	printf("n = %lld\n", *n);
 	start = clock();
 	//factorization(*n, p, q);
-	pollard_p1_factorization(*n, p, q);
+	pollard_p1_factorization(*n, p, q, primes, primes_length);
 	end = clock();
 	printf("p = %lld; q = %lld in %lf seconds\n", *p, *q, (end-start)/(double)CLOCKS_PER_SEC);
 	d = calculatePrivateKey(e,*p,*q);
@@ -63,4 +69,19 @@ int main()
 	cudaFree(dev_n);
 
 	return 0;
+}
+
+void read_primes(uint16_t *primes, uint16_t primes_length) {
+	FILE *datei;
+	int prime;
+	int count = 0; 
+	/* Zum Lesen öffnen */ 
+	datei = fopen("src/primzahlenbis1millionen.txt", "r");
+	while ((fscanf(datei, "%d,", &prime)) != EOF) { 
+		primes[count++] = (uint16_t) prime; 
+	} 
+	fclose(datei); // Loop over strings
+	for (int i = 0; i < 78499; i++) { 
+		printf("%d \n", primes[i]);
+	}
 }

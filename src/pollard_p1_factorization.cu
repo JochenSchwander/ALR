@@ -1,33 +1,12 @@
 #include "pollard_p1_factorization.h"
 #include "math_stuff.h"
 #include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 
-void getAllPrimNumbers(uint16_t *primes, uint16_t *primes_length) {
-	*primes_length = 78499;
-	primes = (uint16_t *) malloc(sizeof(uint16_t)*primes_length);
-
-	FILE *datei;
-	uint16_t prime;
-	int count = 0;
-
-	/* Zum Lesen šffnen */
-	datei = fopen ("src/primzahlenbis1millionen.txt", "r");
-
-	while((fscanf(datei,"%u,",&prime)) != EOF ) {
-		primes[count++] = prime;
-	}
-
-	  fclose(datei);
-
-}
-
-void pollard_p1_factorization(long long int n, long long int* p, long long int* q) {
-	//TODO primzahlen datei einlesen + als array bereitstellen
-	uint16_t *primes;
-	uint16_t *primes_length;
-
-	*p = pollard_p1_factor(n, primes, *primes_length);
+void pollard_p1_factorization(long long int n, long long int* p, long long int* q, uint16_t *primes, uint16_t primes_length) {
+	*p = pollard_p1_factor(n, primes, primes_length);
 	*q = n / *p;
 }
 
