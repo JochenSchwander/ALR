@@ -1,9 +1,11 @@
-#include "stdio.h"
+#include <stdio.h>
 //#include "factorization.h"
 #include "pollard_p1_factorization.h"
 #include "gpu_factorization.h"
 #include "rsacalculation.h"
 #include <cuda.h>
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
 #include <time.h>
 
 
