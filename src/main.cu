@@ -52,7 +52,7 @@ int main() {
 	cudaMalloc((void **) &dev_p, sizeof(long long int));
 	cudaMalloc((void **) &dev_q, sizeof(long long int));
 
-	cudaMemcpy( dev_n, n, size,cudaMemcpyHostToDevice);
+	cudaMemcpy( dev_n, n, sizeof(long long int),cudaMemcpyHostToDevice);
 
 	start = clock();
 	gpu_factorization<<<4,384>>>(dev_n, dev_p, dev_q);
