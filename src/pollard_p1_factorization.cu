@@ -8,7 +8,7 @@ void pollard_p1_factorization(long long int n, long long int* p, long long int* 
 	uint16_t *primes;
 	uint16_t *primes_length;
 
-	*p = pollard_p1_factor(n);
+	*p = pollard_p1_factor(n, primes, *primes_length);
 	*q = n / *p;
 }
 
