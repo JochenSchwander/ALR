@@ -23,7 +23,12 @@ __device__ long long int power_mod(long long int base, long long int exponent, l
 	long long int number = base;
 
 	for(i = 1; i < exponent; i++) {
-		number = (number * base) % modulus;
+		number *= base;
+
+		//so not every time a modulus is used, when unneeded
+		if (number >= modulus) {
+			number %= modulus;
+		}
 	}
 
 	return number;
