@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//#define DEBUG_PRINT_CLOCKS
+
 
 void read_primes(unsigned int *primes);
 
@@ -43,7 +45,11 @@ int main() {
 	//factorization(*n, p, q);
 	pollard_p1_factorization(*n, p, q, primes, primes_length);
 	end = clock();
+#ifdef DEBUG_PRINT_CLOCKS
+	printf("p = %lld; q = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
+#else
 	printf("p = %lld; q = %lld in %lf seconds\n", *p, *q, (end-start)/(double)CLOCKS_PER_SEC);
+#endif
 	d = calculatePrivateKey(e,*p,*q);
 	printf("d = %lld\n", d);
 
@@ -63,12 +69,16 @@ int main() {
 	cudaMemcpy( host_p, dev_p, sizeof(long long int),	cudaMemcpyDeviceToHost);
 	cudaMemcpy( host_q, dev_q, sizeof(long long int),	cudaMemcpyDeviceToHost);
 
-	printf("p = %lld; q = %lld in %lf seconds\n", *host_p, *host_q, (end-start)/(double)CLOCKS_PER_SEC);
+#ifdef DEBUG_PRINT_CLOCKS
+	printf("p = %lld; q = %lld in %lu clocks\n", *host_p, *host_q, (unsigned long)(end-start));
+#else
+	printf("p = %lld; q = %lld in %lf seconds\n", *host_p, *host_q, (end-start)	/(double)CLOCKS_PER_SEC);
+#endif
 
 	cudaFree(dev_p);
 	cudaFree(dev_q);
 	cudaFree(dev_n);
-
+	system("say martin ist ein bob!");
 	return 0;
 }
 
