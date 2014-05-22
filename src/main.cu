@@ -88,7 +88,7 @@ void read_primes(unsigned long int *primes) {
 	int count = 0; 
 	
 	datei = fopen("src/primes.txt", "r");
-	while ((fscanf(datei, "%u,", &prime)) != EOF) { 
+	while ((fscanf(datei, "%lu,", &prime)) != EOF) {
 		primes[count++] = prime; 
 	} 
 	fclose(datei); 
