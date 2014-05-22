@@ -1,5 +1,6 @@
 #include <stdio.h>
 //#include "factorization.h"
+#include "gpu_pollard_p1_factorization.h"
 #include "pollard_p1_factorization.h"
 #include "gpu_factorization.h"
 #include "rsacalculation.h"
@@ -54,7 +55,9 @@ int main() {
 	printf("d = %lld\n", d);
 
 
-	//allocate the momory on th GPU
+
+
+	/*//allocate the momory on th GPU
 	cudaMalloc((void **) &dev_n, sizeof(long long int));
 	cudaMalloc((void **) &dev_p, sizeof(long long int));
 	cudaMalloc((void **) &dev_q, sizeof(long long int));
@@ -78,7 +81,24 @@ int main() {
 	cudaFree(dev_p);
 	cudaFree(dev_q);
 	cudaFree(dev_n);
-	system("say martin ist ein bob!");
+
+	*/
+
+
+	start = clock();
+	//factorization(*n, p, q);
+	gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+	end = clock();
+#ifdef DEBUG_PRINT_CLOCKS
+	printf("p = %lld; q = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
+#else
+	printf("p = %lld; q = %lld in %lf seconds\n", *p, *q, (end-start)/(double)CLOCKS_PER_SEC);
+#endif
+
+
+
+
+	system("say das programm wurde erfolgreich ausgefuehrt und martin ist ein bob!");
 	return 0;
 }
 
