@@ -1,6 +1,6 @@
 #include "gpu_pollard_p1_factorization.h"
 #include "gpu_math_stuff.h"
-#include <stdbool.h>
+#include "stdbool.h"
 
 //#define GPU_POLLARD_P1_V2
 #define GPU_POLLARD_P1_V1
