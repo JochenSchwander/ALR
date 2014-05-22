@@ -27,7 +27,7 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 	cudaMemcpy(factor_not_found, &factor_not_found_host, sizeof(bool), cudaMemcpyHostToDevice);
 
 	// calculate a prime factor on gpu
-	gpu_pollard_p1_factor<<<1,1>>>(n_dev, primes_dev, primes_length_dev, p_dev);
+	gpu_pollard_p1_factor<<<4,384>>>(n_dev, primes_dev, primes_length_dev, p_dev);
 	cudaDeviceSynchronize();
 
 	// copy result to host
@@ -52,9 +52,15 @@ __global__ void gpu_pollard_p1_factor(long long int *n_in, unsigned long int *pr
 	unsigned long int primes_length = *primes_length_in;
 
 
+	long long int idx = blockIdx.x * blockDim.x + threadIdx.x;
+	long long int step_size = blockDim.x*gridDim.x;
+
+
+
+
 	for (a = 2; a < a_max; a++) {
 
-		for (b = 2; b < b_max && *factor_not_found; b++) {
+		for (b = 2+idx; b < b_max && *factor_not_found; b+=step_size) {
 
 			//calculate e
 #ifdef GPU_POLLARD_P1_V2
