@@ -40,86 +40,91 @@ int main() {
 
 	int choice;
 	double cpuTime, gpuTime;
+	bool isEnd = false;
 
-	printf("------------- Menu ----------------\n");
-	printf("1. starten mit Standard n und e ...\n");
-	printf("2. Eingabe von n und e ...\n");
-	printf("Eingabe choice: ");
-	scanf("%d",&choice);
+	while(!isEnd){
+		printf("------------- Menu ----------------\n");
+		printf("1. starten mit Standard n und e ...\n");
+		printf("2. Eingabe von n und e ...\n");
+		printf("3. Exit the program ...\n");
+		printf("Eingabe choice: ");
+		scanf("%d",&choice);
 
-	switch(choice){
-		case 1:	printf("------------- Ausgabe -------------\n");
-				printf("========= CPU ========\n");
-				printf("CPU berchnung wird gestartet...\n");
-				start = clock();
-				pollard_p1_factorization(*n, p, q, primes, primes_length);
-				end = clock();
-				cpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-				printf("p = %lld;\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-				printf("Ergebnis nach (%lf) Sekunden : \np = %lld;\nq = %lld \n", cpuTime, *p, *q);
-				d = calculatePrivateKey(e,*p,*q);
-				printf("d = %lld\n", d);
+		switch(choice){
+			case 1:	printf("------------- Ausgabe -------------\n");
+					printf("========= CPU ========\n");
+					printf("CPU berchnung wird gestartet...\n");
+					start = clock();
+					pollard_p1_factorization(*n, p, q, primes, primes_length);
+					end = clock();
+					cpuTime = (end-start)/(double)CLOCKS_PER_SEC;
+					printf("p = %lld;\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
+					printf("Ergebnis nach (%lf) Sekunden : \np = %lld;\nq = %lld \n", cpuTime, *p, *q);
+					d = calculatePrivateKey(e,*p,*q);
+					printf("d = %lld\n", d);
 
-				printf("========= GPU ========\n");
-				printf("GPU Register werden beschrieben\n");
-				printf("GPU berechnung wird gestartet\n");
-				start = clock();
-				gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
-				end = clock();
-				gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-				printf("p = %lld;\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-				printf("Ergebnis nach (%lf) Sekunden : \np = %lld;\nq = %lld \n", gpuTime, *p, *q);
+					printf("========= GPU ========\n");
+					printf("GPU Register werden beschrieben\n");
+					printf("GPU berechnung wird gestartet\n");
+					start = clock();
+					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+					end = clock();
+					gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
+					printf("p = %lld;\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
+					printf("Ergebnis nach (%lf) Sekunden : \np = %lld;\nq = %lld \n", gpuTime, *p, *q);
 
-				printf("---------------------------\n");
-				if(cpuTime > gpuTime) {
-					printf("GPU war %lf Sekunden schneller\n", cpuTime-gpuTime);
-					printf("GPU war %lf mal schneller\n", cpuTime/gpuTime);
-				} else {
-					printf("CPU war %lf Sekunden schneller\n", gpuTime-cpuTime);
-					printf("CPU war %lf mal schneller\n", gpuTime/cpuTime);
-				}
-			break;
-		case 2:	printf("Eingabe n: ");
-				scanf("%lld",n);
-				printf("Eingabe e: ");
-				scanf("%lld",&e);
-				printf("You input n=%lld und e=%lld \n", *n, e);
+					printf("---------------------------\n");
+					if(cpuTime > gpuTime) {
+						printf("GPU war %lf Sekunden schneller\n", cpuTime-gpuTime);
+						printf("GPU war %lf mal schneller\n", cpuTime/gpuTime);
+					} else {
+						printf("CPU war %lf Sekunden schneller\n", gpuTime-cpuTime);
+						printf("CPU war %lf mal schneller\n", gpuTime/cpuTime);
+					}
+				break;
+			case 2:	printf("Eingabe n: ");
+					scanf("%lld",n);
+					printf("Eingabe e: ");
+					scanf("%lld",&e);
+					printf("You input n=%lld und e=%lld \n", *n, e);
 
-				printf("------------- Ausgabe -------------\n");
-				printf("========= CPU ========\n");
-				printf("CPU berchnung wird gestartet...\n");
-				start = clock();
-				pollard_p1_factorization(*n, p, q, primes, primes_length);
-				end = clock();
-				cpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-				printf("p = %lld;\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-				printf("Ergebnis nach %lf Sekunden : \np = %lld;\nq = %lld \n", cpuTime, *p, *q);
-				d = calculatePrivateKey(e,*p,*q);
-				printf("d = %lld\n", d);
+					printf("------------- Ausgabe -------------\n");
+					printf("========= CPU ========\n");
+					printf("CPU berchnung wird gestartet...\n");
+					start = clock();
+					pollard_p1_factorization(*n, p, q, primes, primes_length);
+					end = clock();
+					cpuTime = (end-start)/(double)CLOCKS_PER_SEC;
+					printf("p = %lld;\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
+					printf("Ergebnis nach %lf Sekunden : \np = %lld;\nq = %lld \n", cpuTime, *p, *q);
+					d = calculatePrivateKey(e,*p,*q);
+					printf("d = %lld\n", d);
 
-				printf("========= GPU ========\n");
-				printf("GPU Register werden beschrieben\n");
-				printf("GPU berechnung wird gestartet\n");
-				start = clock();
-				gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-				gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
-				end = clock();
-				printf("p = %lld;/nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-				printf("Ergebnis nach (%lf) Sekunden : /np = %lld;/nq = %lld \n", gpuTime, *p, *q);
+					printf("========= GPU ========\n");
+					printf("GPU Register werden beschrieben\n");
+					printf("GPU berechnung wird gestartet\n");
+					start = clock();
+					gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
+					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+					end = clock();
+					printf("p = %lld;/nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
+					printf("Ergebnis nach (%lf) Sekunden : /np = %lld;/nq = %lld \n", gpuTime, *p, *q);
 
-				printf("---------------------------\n");
-				if(cpuTime > gpuTime) {
-					printf("GPU war %lf Sekunden schneller\n", cpuTime-gpuTime);
-					printf("GPU war %lf mal schneller\n", cpuTime/gpuTime);
-				} else {
-					printf("CPU war %lf Sekunden schneller\n", gpuTime-cpuTime);
-					printf("CPU war %lf mal schneller\n", gpuTime/cpuTime);
-				}
-			break;
-		default:	// do nothing
-			break;
+					printf("---------------------------\n");
+					if(cpuTime > gpuTime) {
+						printf("GPU war %lf Sekunden schneller\n", cpuTime-gpuTime);
+						printf("GPU war %lf mal schneller\n", cpuTime/gpuTime);
+					} else {
+						printf("CPU war %lf Sekunden schneller\n", gpuTime-cpuTime);
+						printf("CPU war %lf mal schneller\n", gpuTime/cpuTime);
+					}
+				break;
+			case 3:	isEnd = true;
+				break;
+			default:	// do nothing
+				break;
+		}
 	}
-
 	/*start = clock();
 	//factorization(*n, p, q);
 	pollard_p1_factorization(*n, p, q, primes, primes_length);
