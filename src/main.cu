@@ -11,11 +11,11 @@
 #include <stdio.h>
 
 
-void read_primes(unsigned int *primes);
+void read_primes(unsigned long int *primes);
 
 int main() {
-	unsigned int primes_length = 78498;
-	unsigned int *primes = (unsigned int *) malloc(sizeof(unsigned int) * primes_length);
+	unsigned long int primes_length = 78498;
+	unsigned long int *primes = (unsigned long int *) malloc(sizeof(unsigned long int) * primes_length);
 
 	//CUDA
 	long long int *dev_n, *dev_p, *dev_q;
@@ -72,9 +72,9 @@ int main() {
 	return 0;
 }
 
-void read_primes(unsigned int *primes) {
+void read_primes(unsigned long int *primes) {
 	FILE *datei;
-	unsigned int prime;
+	unsigned long int prime;
 	int count = 0; 
 	
 	datei = fopen("src/primes.txt", "r");

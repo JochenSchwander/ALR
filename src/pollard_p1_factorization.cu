@@ -6,18 +6,18 @@
 //#define DEBUG_POLLARD_P1
 #ifdef DEBUG_POLLARD_P1
 #include <stdio.h>
-#endif // !DEBUG_POLLARD_P1
-#define POLLARD_P1_V1
+#endif
 //#define POLLARD_P1_V2
+#define POLLARD_P1_V1
 
 
-void pollard_p1_factorization(long long int n, long long int* p, long long int* q, unsigned int *primes, unsigned int primes_length) {
+void pollard_p1_factorization(long long int n, long long int* p, long long int* q, unsigned long int *primes, unsigned long int primes_length) {
 	*p = pollard_p1_factor(n, primes, primes_length);
 	*q = n / *p;
 }
 
 
-long long int pollard_p1_factor(long long int n, unsigned int *primes, unsigned int primes_length) {
+long long int pollard_p1_factor(long long int n, unsigned long int *primes, unsigned long int primes_length) {
 	long long int b_max = 1000000;
 	long long int a_max = 1000;
 	long long int b, e, p, i, a, g;

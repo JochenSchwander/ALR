@@ -1,6 +1,13 @@
 #ifndef GPU_POLLARD_P1_FACTORIZATION_H
 #define GPU_POLLARD_P1_FACTORIZATION_H
 
+#include <cuda.h>
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
+
+void gpu_pollard_p1_factorization(long long int n, long long int* p, long long int* q, unsigned long int *primes, unsigned long int primes_length);
+
+__global__ void gpu_pollard_p1_factor(long long int n, unsigned long int *primes, unsigned long int primes_length, long long int *p);
 
 
 #endif

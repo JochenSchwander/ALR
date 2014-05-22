@@ -1,6 +1,6 @@
 #include "gpu_math_stuff.h"
 
-__device__ long long int gpu_euclidean_gcd(long long int a_in, long long int b_in) {
+__device__ inline long long int gpu_euclidean_gcd(long long int a_in, long long int b_in) {
 	long long int a = a_in;
 	long long int b = b_in;
 	long long int t, m;
@@ -18,7 +18,7 @@ __device__ long long int gpu_euclidean_gcd(long long int a_in, long long int b_i
 	return a;
 }
 
-__device__ long long int gpu_power_mod(long long int base, long long int exponent, long long int modulus) {
+__device__ inline long long int gpu_power_mod(long long int base, long long int exponent, long long int modulus) {
 	long long int i;
 	long long int number = base;
 
