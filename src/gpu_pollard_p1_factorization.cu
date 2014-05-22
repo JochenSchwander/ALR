@@ -21,7 +21,7 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 	cudaMemcpy(primes_dev, primes, sizeof(unsigned long int) * primes_length, cudaMemcpyHostToDevice);
 
 	// calculate a prime factor on gpu
-	gpu_pollard_p1_factor<<<1,1>>>();
+	gpu_pollard_p1_factor<<<1,1>>>(n_dev, primes_dev, primes_length_dev, p_dev);
 	cudaDeviceSynchronize();
 
 	// copy result to host
@@ -37,10 +37,12 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 	*q = n / *p;
 }
 
-__global__ void gpu_pollard_p1_factor(long long int n, unsigned long int *primes, unsigned long int primes_length, long long int *factor) {
+__global__ void gpu_pollard_p1_factor(long long int *n_in, unsigned long int *primes, unsigned long int *primes_length_in, long long int *factor_out) {
 	long long int b_max = 1000000;
 	long long int a_max = 1000;
 	long long int b, e, p, i, a, g;
+	long long int n = *n_in;
+	unsigned long int primes_length = *primes_length_in;
 
 	for (a = 2; a < a_max; a++) {
 
@@ -57,10 +59,10 @@ __global__ void gpu_pollard_p1_factor(long long int n, unsigned long int *primes
 				p = (long long int) primes[i];
 				if (b >= p) {
 #ifdef GPU_POLLARD_P1_V2
-					e *= power_mod(p, log((long double)b) / log((long double) p), n);
+					e *= gpu_power_mod(p, log((long double)b) / log((long double) p), n);
 #endif
 #ifdef GPU_POLLARD_P1_V1
-					e = power_mod(e, p, n);
+					e = gpu_power_mod(e, p, n);
 #endif
 				} else {
 					break;
@@ -69,10 +71,10 @@ __global__ void gpu_pollard_p1_factor(long long int n, unsigned long int *primes
 
 			//check if g is a factor of n
 #ifdef GPU_POLLARD_P1_V2
-			g = euclidean_gcd(power_mod(a, e - 1, n), n);
+			g = gpu_euclidean_gcd(gpu_power_mod(a, e - 1, n), n);
 #endif
 #ifdef GPU_POLLARD_P1_V1
-			g = euclidean_gcd(e - 1, n);
+			g = gpu_euclidean_gcd(e - 1, n);
 #endif
 			if (g > 1) {
 				if (g == n) {
@@ -80,7 +82,7 @@ __global__ void gpu_pollard_p1_factor(long long int n, unsigned long int *primes
 					break;
 				} else {
 					//found a real factor of n
-					*factor = g;
+					*factor_out = g;
 					return;
 				}
 			}
