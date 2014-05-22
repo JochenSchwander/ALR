@@ -3,11 +3,12 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define DEBUG_POLLARD_P1
+//#define DEBUG_POLLARD_P1
 #ifdef DEBUG_POLLARD_P1
 #include <stdio.h>
 #endif // !DEBUG_POLLARD_P1
-
+#define POLLARD_P1_V1
+//#define POLLARD_P1_V2
 
 
 void pollard_p1_factorization(long long int n, long long int* p, long long int* q, unsigned int *primes, unsigned int primes_length) {
@@ -23,18 +24,28 @@ long long int pollard_p1_factor(long long int n, unsigned int *primes, unsigned 
 
 	for (a = 2; a < a_max; a++) {
 #ifdef DEBUG_POLLARD_P1
-		printf("PP1: a = %lld, ", a);
+		printf("PP1: a = %lld\n", a);
 #endif
 		for (b = 2; b < b_max; b++) {
 #ifdef DEBUG_POLLARD_P1
-			printf("b = %lld, ", b);
+			printf("PP1: b = %lld, ", b);
 #endif
 			//calculate e
+#ifdef POLLARD_P1_V2
 			e = 1;
+#endif
+#ifdef POLLARD_P1_V1
+			e = a;
+#endif
 			for (i = 0; i < primes_length; i++) {
 				p = (long long int) primes[i];
 				if (b >= p) {
+#ifdef POLLARD_P1_V2
 					e *= power_mod(p, log((long double)b) / log((long double) p), n);
+#endif
+#ifdef POLLARD_P1_V1
+					e = power_mod(e, p, n);
+#endif
 				} else {
 					break;
 				}
@@ -43,7 +54,12 @@ long long int pollard_p1_factor(long long int n, unsigned int *primes, unsigned 
 			printf("e = %lld, ", e);
 #endif
 			//check if g is a factor of n
+#ifdef POLLARD_P1_V2
 			g = euclidean_gcd(power_mod(a, e - 1, n), n);
+#endif
+#ifdef POLLARD_P1_V1
+			g = euclidean_gcd(e - 1, n);
+#endif
 #ifdef DEBUG_POLLARD_P1
 			printf("g = %lld\n", g);
 #endif

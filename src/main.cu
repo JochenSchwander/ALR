@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define CLOCKS_PER_SEC 1000
 
 void read_primes(unsigned int *primes);
 
