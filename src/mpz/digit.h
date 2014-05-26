@@ -11,6 +11,7 @@
 #define __418_DIGIT_H__
 
 #include "compile.h"
+#include <stdio.h>
 
 #define LOG2_DIGIT_BASE     32
 #define DIGIT_BASE          ((unsigned long long) 1 << (LOG2_DIGIT_BASE))

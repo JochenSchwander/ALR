@@ -4,9 +4,6 @@
 #ifndef __418_COMPILE_H__
 #define __418_COMPILE_H__
 
-#define true 1
-#define false 0
-
 #ifndef __CUDACC__ /* when compiling with g++ ... */
 
 #define __device__

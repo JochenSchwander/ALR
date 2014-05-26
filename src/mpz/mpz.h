@@ -11,6 +11,7 @@
 #include "compile.h"
 #include "cuda_string.h"
 #include "digit.h"
+#include <stdio.h>
 
 #define MPZ_NEGATIVE      1
 #define MPZ_NONNEGATIVE  0
