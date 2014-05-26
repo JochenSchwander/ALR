@@ -10,11 +10,12 @@
 
 #ifdef DEBUG_GPU_ONLY_CALC
 #include <stdio.h>
+#include <time.h>
+clock_t start, end;
 #endif
 
 
 __device__ bool *factor_not_found_dev;
-clock_t start, end;
 
 void gpu_pollard_p1_factorization(long long int n, long long int* p, long long int* q, unsigned long int *primes, unsigned long int primes_length) {
 	// pointers needed on device
