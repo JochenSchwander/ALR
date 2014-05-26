@@ -22,8 +22,6 @@ int main() {
 	clock_t start, end;
 
 	long long int *p, *q, *n, e, d;
-	p = (long long int*)malloc(sizeof(long long int));
-	q = (long long int*)malloc(sizeof(long long int));
 	n = (long long int*)malloc(sizeof(long long int));
 	
 	read_primes(primes);
@@ -37,6 +35,10 @@ int main() {
 
 	// TODO add menu point for GPU and CPU calculation seperat
 	while(!isEnd){
+		p = (long long int*)malloc(sizeof(long long int));
+		q = (long long int*)malloc(sizeof(long long int));
+
+		//system("say Bitte waehlen sie einen Menuepunkt. Vergiss nicht, martin ist ein bob/!");
 		printf("------------- Menu ----------------\n");
 		printf("1. CPU & GPU - starten mit Standard n und e ...\n");
 		printf("2. CPU & GPU - Eingabe von n und e ...\n");
@@ -105,8 +107,8 @@ int main() {
 					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
 					end = clock();
 					gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-					printf("p = %lld/nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-					printf("Ergebnis nach (%lf) Sekunden : /np = %lld/nq = %lld \n", gpuTime, *p, *q);
+					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
+					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", gpuTime, *p, *q);
 
 					printf("---------------------------\n");
 					if(cpuTime > gpuTime) {
@@ -170,15 +172,16 @@ int main() {
 					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
 					end = clock();
 					gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-					printf("p = %lld/nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-					printf("Ergebnis nach (%lf) Sekunden : /np = %lld/nq = %lld \n", gpuTime, *p, *q);
+					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
+					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", gpuTime, *p, *q);
 				break;
 			default: isEnd = true;
 				break;
 		}
+		free(p);
+		free(q);
 	}
 
-	system("say das programm wurde erfolgreich ausgefuehrt und martin ist kein kein kein bob! Notiz an Phil /!");
 	return 0;
 }
 
