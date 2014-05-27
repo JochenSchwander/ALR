@@ -1,14 +1,7 @@
 #include "gpu_pollard_p1_factorization.h"
 #include "gpu_math_stuff.h"
 #include <stdbool.h>
-
-
-//include MPZ
-#ifdef OS_WINDOWS
-	#include "mpz.h"
-#else
-	#include "mpz/mpz.h"
-#endif
+#include "mpz/mpz.h"
 
 //#define GPU_POLLARD_P1_V2
 #define GPU_POLLARD_P1_V1

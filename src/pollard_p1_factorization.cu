@@ -2,13 +2,7 @@
 #include "math_stuff.h"
 #include <math.h>
 #include <stdlib.h>
-
-//include MPZ
-#ifdef OS_WINDOWS
-	#include "mpz.h"
-#else
-	#include "mpz/mpz.h"
-#endif
+#include "mpz/mpz.h"
 
 //#define DEBUG_POLLARD_P1
 #ifdef DEBUG_POLLARD_P1
