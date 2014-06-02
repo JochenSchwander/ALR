@@ -2,11 +2,11 @@
 #include "gpu_math_stuff.h"
 #include <stdbool.h>
 
-//#define GPU_POLLARD_P1_V2
 #define GPU_POLLARD_P1_V1
+//#define GPU_POLLARD_P1_V2
 
-int gridSize = 2; // 2, 4, 8
-int blockSize = 192;
+int gridSize = 2*10; // 2, 4, 8
+int blockSize = 192*10;
 
 //Weichen
 #define DEBUG_GPU_ONLY_CALC
@@ -16,7 +16,6 @@ int blockSize = 192;
 #include <time.h>
 clock_t start, end;
 #endif
-
 
 
 void gpu_pollard_p1_factorization(long long int n, long long int* p, long long int* q, unsigned long int *primes, unsigned long int primes_length) {
@@ -77,18 +76,18 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 
 
 	// calculate other factor on cpu
-	*q = n / *p;
+	//*q = n / *p;
 }
 
 __global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, unsigned long int *primes, unsigned long int *primes_length_in, long long int *factor_out, bool *factor_not_found_dev) {
-	long long int b_max = 1000000;
-	long long int b, e, p, i, g;
+	int b, b_max = 1000000;
+	long long int  e, p, i, g;
 	long long int n = *n_in;
-	long long int a = *a_in;
+	//long long int a = *a_in;
 	unsigned long int primes_length = *primes_length_in;
 
-	long long int idx = blockIdx.x * blockDim.x + threadIdx.x;
-	long long int step_size = blockDim.x*gridDim.x;
+	unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
+	unsigned int step_size = blockDim.x*gridDim.x;
 
 	for (b = 2+idx; b < b_max && *factor_not_found_dev; b+=step_size) {
 
@@ -97,13 +96,13 @@ __global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, 
 		e = 1;
 #endif
 #ifdef GPU_POLLARD_P1_V1
-		e = a;
+		e = *a_in;
 #endif
 		for (i = 0; i < primes_length; i++) {
 			p = (long long int) primes[i];
 			if (b >= p) {
 #ifdef GPU_POLLARD_P1_V2
-				e *= gpu_power_mod(p, log((long double)b) / log((long double) p), n);
+				e *= gpu_power_mod(p, log((double)b) / log((double) p), n);
 #endif
 #ifdef GPU_POLLARD_P1_V1
 				e = gpu_power_mod(e, p, n);
@@ -115,7 +114,7 @@ __global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, 
 
 		//check if g is a factor of n
 #ifdef GPU_POLLARD_P1_V2
-		g = gpu_euclidean_gcd(gpu_power_mod(a, e - 1, n), n);
+		g = gpu_euclidean_gcd(gpu_power_mod(*a_in, e - 1, n), n);
 #endif
 #ifdef GPU_POLLARD_P1_V1
 		g = gpu_euclidean_gcd(e - 1, n);

@@ -26,7 +26,9 @@ int main() {
 	
 	read_primes(primes);
 
-	*n = 902491;
+	*n = 20903LL * 20921LL;
+	//*n = 7331LL * 7333LL;
+	//*n = 902491;
 	e = 5;
 
 	int choice;
