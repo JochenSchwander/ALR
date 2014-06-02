@@ -5,6 +5,9 @@
 //#define GPU_POLLARD_P1_V2
 #define GPU_POLLARD_P1_V1
 
+int gridSize = 2; // 2, 4, 8
+int blockSize = 192;
+
 //Weichen
 #define DEBUG_GPU_ONLY_CALC
 
@@ -15,14 +18,15 @@ clock_t start, end;
 #endif
 
 
-__device__ bool *factor_not_found_dev;
 
 void gpu_pollard_p1_factorization(long long int n, long long int* p, long long int* q, unsigned long int *primes, unsigned long int primes_length) {
 	// pointers needed on device
-	bool factor_not_found = true;
 	long long int a, a_max = 1000;
 	long long int *n_dev, *p_dev, *a_dev;
 	unsigned long int *primes_dev, *primes_length_dev;
+	bool factor_not_found = true;
+	bool *factor_not_found_dev;
+
 
 	// allocate memory on device
 	cudaMalloc((void **) &n_dev, sizeof(long long int));
@@ -30,11 +34,14 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 	cudaMalloc((void **) &primes_length_dev, sizeof(unsigned long int));
 	cudaMalloc((void **) &primes_dev, sizeof(unsigned long int) * primes_length);
 	cudaMalloc((void **) &a_dev, sizeof(long long int));
+	cudaMalloc((void **) &factor_not_found_dev, sizeof(bool));
+
 	
 	// copy input to device
 	cudaMemcpy(n_dev, &n, sizeof(long long int), cudaMemcpyHostToDevice);
 	cudaMemcpy(primes_length_dev, &primes_length, sizeof(unsigned long int), cudaMemcpyHostToDevice);
 	cudaMemcpy(primes_dev, primes, sizeof(unsigned long int) * primes_length, cudaMemcpyHostToDevice);
+	cudaMemcpy(factor_not_found_dev, &factor_not_found, sizeof(bool), cudaMemcpyHostToDevice);
 
 	for (a = 2; a < a_max && factor_not_found; a++) {
 		// copy a in
@@ -46,7 +53,7 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 #endif
 
 		// calculate a prime factor on gpu
-		gpu_pollard_p1_factor<<<2,192>>>(n_dev, a_dev, primes_dev, primes_length_dev, p_dev);
+		gpu_pollard_p1_factor<<<gridSize,blockSize>>>(n_dev, a_dev, primes_dev, primes_length_dev, p_dev, factor_not_found_dev);
 		cudaDeviceSynchronize();
 
 #ifdef DEBUG_GPU_ONLY_CALC
@@ -55,7 +62,7 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 #endif
 
 		// check if factor allready found
-		cudaMemcpyFromSymbol(&factor_not_found, factor_not_found_dev, sizeof(bool), 0, cudaMemcpyDeviceToHost);
+		cudaMemcpy(&factor_not_found, factor_not_found_dev, sizeof(bool), cudaMemcpyDeviceToHost);
 	}
 
 	// copy result to host
@@ -73,7 +80,7 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 	*q = n / *p;
 }
 
-__global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, unsigned long int *primes, unsigned long int *primes_length_in, long long int *factor_out) {
+__global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, unsigned long int *primes, unsigned long int *primes_length_in, long long int *factor_out, bool *factor_not_found_dev) {
 	long long int b_max = 1000000;
 	long long int b, e, p, i, g;
 	long long int n = *n_in;
@@ -83,14 +90,8 @@ __global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, 
 	long long int idx = blockIdx.x * blockDim.x + threadIdx.x;
 	long long int step_size = blockDim.x*gridDim.x;
 
-	if (factor_not_found_dev == NULL) {
-		factor_not_found_dev = (bool*) malloc(sizeof(bool));
-	}
-
-	*factor_not_found_dev = true;
-
-
 	for (b = 2+idx; b < b_max && *factor_not_found_dev; b+=step_size) {
+
 		//calculate e
 #ifdef GPU_POLLARD_P1_V2
 		e = 1;

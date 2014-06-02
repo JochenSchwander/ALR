@@ -7,7 +7,7 @@
 
 void gpu_pollard_p1_factorization(long long int n, long long int* p, long long int* q, unsigned long int *primes, unsigned long int primes_length);
 
-__global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, unsigned long int *primes, unsigned long int *primes_length_in, long long int *factor_out);
+__global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, unsigned long int *primes, unsigned long int *primes_length_in, long long int *factor_out, bool *factor_not_found_dev);
 
 
 #endif
