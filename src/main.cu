@@ -9,10 +9,40 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "mpz/mpz.h"
 
 
 
 void read_primes(unsigned long int *primes);
+
+void test_mult(const char * op1_str, const char *op2_str,
+               const char *correct_str) {
+  char got_str[1024];
+
+  mpz_t dst;
+  mpz_t op1;
+  mpz_t op2;
+
+  mpz_init(&dst);
+  mpz_init(&op1);
+  mpz_init(&op2);
+
+  mpz_set_str(&op1, op1_str);
+  mpz_set_str(&op2, op2_str);
+
+  mpz_mult(&dst, &op1, &op2);
+
+  mpz_get_str(&dst, got_str, 1024);
+
+  printf("------> %s\n",got_str);
+  if (!strcmp(correct_str, got_str)) {
+    printf(".");
+  }
+  else {
+    printf("\nFAIL: %s * %s = [Expected: %s, Got: %s]\n",
+           op1_str, op2_str, correct_str, got_str);
+  }
+}
 
 int main() {
 	unsigned long int primes_length = 78498;
@@ -34,6 +64,14 @@ int main() {
 	int choice;
 	double cpuTime, gpuTime;
 	bool isEnd = false;
+
+	  test_mult("1", "1", "1");
+	  test_mult("1", "2", "2");
+	  test_mult("a", "63", "3de");
+	  test_mult("7b", "2fb", "16e99");
+	  test_mult("2fb", "7b", "16e99");
+	  test_mult("117e92887c20f83", "1", "117e92887c20f83");
+	  test_mult("1", "117e92887c20f83", "117e92887c20f83");
 
 	// TODO add menu point for GPU and CPU calculation seperat
 	while(!isEnd){
