@@ -11,7 +11,6 @@
 #include "compile.h"
 #include "cuda_string.h"
 #include "digit.h"
-#include <stdio.h>
 
 #define MPZ_NEGATIVE      1
 #define MPZ_NONNEGATIVE  0
@@ -468,10 +467,10 @@ __device__ __host__ inline char* mpz_get_str(mpz_t *mpz, char *str, int bufsize)
         return NULL;
       }
       if (!print_zeroes) {
-        str_index += sprintf(str + str_index, "%x", digit);
+//        str_index += sprintf(str + str_index, "%x", digit);
       }
       else {
-        str_index += sprintf(str + str_index, "%08x", digit);
+//        str_index += sprintf(str + str_index, "%08x", digit);
       }
       print_zeroes = 1;
     }

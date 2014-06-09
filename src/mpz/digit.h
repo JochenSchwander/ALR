@@ -11,7 +11,6 @@
 #define __418_DIGIT_H__
 
 #include "compile.h"
-#include <stdio.h>
 
 #define LOG2_DIGIT_BASE     32
 #define DIGIT_BASE          ((unsigned long long) 1 << (LOG2_DIGIT_BASE))
@@ -21,14 +20,14 @@ typedef unsigned digit_t;
 
 __device__ __host__ inline void digits_print(digit_t *digits,
                                             unsigned num_digits) {
-  unsigned i;
-
-  printf("{ ");
-  for (i = 0; i < num_digits; i++) {
-    printf("%x", digits[i]);
-    if (i < num_digits - 1) printf(", ");
-  }
-  printf(" }");
+//  unsigned i;
+//
+//  printf("{ ");
+//  for (i = 0; i < num_digits; i++) {
+//    printf("%x", digits[i]);
+//    if (i < num_digits - 1) printf(", ");
+//  }
+//  printf(" }");
 }
 
 /**
