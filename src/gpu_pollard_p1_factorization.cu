@@ -5,8 +5,8 @@
 #define GPU_POLLARD_P1_V1
 //#define GPU_POLLARD_P1_V2
 
-int gridSize = 2*10; // 2, 4, 8
-int blockSize = 192*10;
+int gridSize = 2; // 2, 4, 8
+int blockSize = 192;
 
 //Weichen
 #define DEBUG_GPU_ONLY_CALC
@@ -76,7 +76,7 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 
 
 	// calculate other factor on cpu
-	//*q = n / *p;
+	*q = n / *p;
 }
 
 __global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, unsigned long int *primes, unsigned long int *primes_length_in, long long int *factor_out, bool *factor_not_found_dev) {
