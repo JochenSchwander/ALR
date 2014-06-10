@@ -57,7 +57,7 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 
 #ifdef DEBUG_GPU_ONLY_CALC
 		end = clock();
-		printf("---> gpu calculation: %lf\n; a = %lld\n",  (end-start)/(double)CLOCKS_PER_SEC, a);
+		printf("---> gpu calculation: %lf; a = %lld\n",  (end-start)/(double)CLOCKS_PER_SEC, a);
 #endif
 
 		// check if factor allready found
@@ -80,16 +80,14 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 }
 
 __global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, unsigned long int *primes, unsigned long int *primes_length_in, long long int *factor_out, bool *factor_not_found_dev) {
-	int b, b_max = 1000000;
+	unsigned int b, 
+	const unsigned int b_max = 1000000;
 	long long int  e, p, i, g;
 	long long int n = *n_in;
 	//long long int a = *a_in;
 	unsigned long int primes_length = *primes_length_in;
 
-	unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
-	unsigned int step_size = blockDim.x*gridDim.x;
-
-	for (b = 2+idx; b < b_max && *factor_not_found_dev; b+=step_size) {
+	for (b = 2 + blockIdx.x * blockDim.x + threadIdx.x; b < b_max && *factor_not_found_dev; b += blockDim.x * gridDim.x) {
 
 		//calculate e
 #ifdef GPU_POLLARD_P1_V2
