@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "gpu_pollard_p1_factorization.h"
 #include "pollard_p1_factorization.h"
 #include "rsacalculation.h"
@@ -8,12 +7,15 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 void read_primes(unsigned long int *primes);
 
-int main() {
+int main(int argc, char *argv[]) {
 	unsigned long int primes_length = 78498;
 	unsigned long int *primes = (unsigned long int *) malloc(sizeof(unsigned long int) * primes_length);
+	int i, j;
+	bool statisticMode = false;
 
 	//time measurement
 	clock_t start, end;
@@ -32,11 +34,16 @@ int main() {
 	double cpuTime, gpuTime;
 	bool isEnd = false;
 
+	if (argc > 0) {
+		if (strstr(argv[1], "-statistic") != NULL) {
+			statisticMode = true;
+			choice = 7;
+			goto menu;
+		}
+	}
+
 	// TODO add menu point for GPU and CPU calculation seperat
 	while(!isEnd){
-		p = (long long int*)malloc(sizeof(long long int));
-		q = (long long int*)malloc(sizeof(long long int));
-
 		//system("say Bitte waehlen sie einen Menuepunkt. Vergiss nicht, martin ist ein bob/!");
 		printf("------------- Menu ----------------\n");
 		printf("1. CPU & GPU - starten mit Standard n und e ...\n");
@@ -45,9 +52,14 @@ int main() {
 		printf("4. CPU - Eingabe von n und e ...\n");
 		printf("5. GPU - starten mit Standard n ...\n");
 		printf("6. GPU - Eingabe von n ...\n");
-		printf("7. Exit the program ...\n");
+		printf("7. GPU - BlockSize/GridSize Statistik\n");
+		printf("8. Exit the program ...\n");
 		printf("Eingabe choice: ");
 		scanf("%d",&choice);
+
+menu:
+		p = (long long int*)malloc(sizeof(long long int));
+		q = (long long int*)malloc(sizeof(long long int));
 
 		switch(choice){
 			case 1:	printf("------------- Ausgabe -------------\n");
@@ -173,6 +185,24 @@ int main() {
 					gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
 					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
 					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", gpuTime, *p, *q);
+				break;
+			case 7: for (i = 1; i <= 1024; i *= 2) {		
+						setGridSize(i);
+						for (j = 32; j <= 1024; j += 32) {
+							setBlockSize(j);
+							printf("gridSize = %d, blockSize = %d, ", getGridSize(), getBlockSize());
+							start = clock();
+							gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+							end = clock();
+							gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
+							printf("p = %lld, q = %lld, clocks = %lu, seconds = %lf\n", *p, *q, (unsigned long)(end-start), gpuTime);
+							*p = 1;
+							*q = 1;
+						}
+					}
+					if (statisticMode) {
+						isEnd = true;
+					}
 				break;
 			default: isEnd = true;
 				break;

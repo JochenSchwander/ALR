@@ -6,10 +6,10 @@
 //#define GPU_POLLARD_P1_V2
 
 int gridSize = 2; // 2, 4, 8
-int blockSize = 192;
+int blockSize = 32;
 
 //Weichen
-#define DEBUG_GPU_ONLY_CALC
+//#define DEBUG_GPU_ONLY_CALC
 
 #ifdef DEBUG_GPU_ONLY_CALC
 #include <stdio.h>
@@ -17,6 +17,21 @@ int blockSize = 192;
 clock_t start, end;
 #endif
 
+void setGridSize(int size) {
+	gridSize = size;
+}
+
+int getGridSize() {
+	return gridSize;
+}
+
+void setBlockSize(int size) {
+	blockSize = size;
+}
+
+int getBlockSize() {
+	return blockSize;
+}
 
 void gpu_pollard_p1_factorization(long long int n, long long int* p, long long int* q, unsigned long int *primes, unsigned long int primes_length) {
 	// pointers needed on device
@@ -80,7 +95,7 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 }
 
 __global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, unsigned long int *primes, unsigned long int *primes_length_in, long long int *factor_out, bool *factor_not_found_dev) {
-	unsigned int b, 
+	unsigned int b;
 	const unsigned int b_max = 1000000;
 	long long int  e, p, i, g;
 	long long int n = *n_in;
