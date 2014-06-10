@@ -40,5 +40,3 @@ __device__ inline long long int gpu_power_mod(long long int base, long long int 
 }
 
 #endif
-
-
