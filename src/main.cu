@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 	double cpuTime, gpuTime;
 	bool isEnd = false;
 
-	if (argc > 0) {
+	if (argc > 1) {
 		if (strstr(argv[1], "-statistic") != NULL) {
 			statisticMode = true;
 			choice = 7;
@@ -186,16 +186,20 @@ menu:
 					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
 					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", gpuTime, *p, *q);
 				break;
-			case 7: for (i = 1; i <= 1024; i *= 2) {		
+			case 7: printf("gridSize,blockSize,p,q,clocks,seconds\n");
+					for (i = 1; i <= 1024; i *= 2) {
 						setGridSize(i);
 						for (j = 32; j <= 1024; j += 32) {
+							if (i * j > 16*640) {
+								continue;
+							}
 							setBlockSize(j);
-							printf("gridSize = %d, blockSize = %d, ", getGridSize(), getBlockSize());
+							printf("%d,%d,", getGridSize(), getBlockSize());
 							start = clock();
 							gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
 							end = clock();
 							gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-							printf("p = %lld, q = %lld, clocks = %lu, seconds = %lf\n", *p, *q, (unsigned long)(end-start), gpuTime);
+							printf("%lld,%lld,%lu,%lf\n", *p, *q, (unsigned long)(end-start), gpuTime);
 							*p = 1;
 							*q = 1;
 						}
