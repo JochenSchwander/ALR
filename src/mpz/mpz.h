@@ -466,12 +466,15 @@ __device__ __host__ inline char* mpz_get_str(mpz_t *mpz, char *str, int bufsize)
       if (bufsize < str_index + 8) {
         return NULL;
       }
+#ifndef __CUDACC__
+
       if (!print_zeroes) {
-//        str_index += sprintf(str + str_index, "%x", digit);
+        str_index += sprintf(str + str_index, "%x", digit);
       }
       else {
-//        str_index += sprintf(str + str_index, "%08x", digit);
+        str_index += sprintf(str + str_index, "%08x", digit);
       }
+#endif
       print_zeroes = 1;
     }
   }

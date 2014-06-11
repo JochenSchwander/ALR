@@ -20,14 +20,15 @@ typedef unsigned digit_t;
 
 __device__ __host__ inline void digits_print(digit_t *digits,
                                             unsigned num_digits) {
-//  unsigned i;
-//
-//  printf("{ ");
-//  for (i = 0; i < num_digits; i++) {
-//    printf("%x", digits[i]);
-//    if (i < num_digits - 1) printf(", ");
-//  }
-//  printf(" }");
+#ifndef __CUDACC__
+  unsigned i;
+  printf("{ ");
+  for (i = 0; i < num_digits; i++) {
+    printf("%x", digits[i]);
+    if (i < num_digits - 1) printf(", ");
+  }
+  printf(" }");
+#endif
 }
 
 /**
