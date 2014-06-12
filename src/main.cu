@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "statistic_definitions.h"
+
 
 void read_primes(unsigned long int *primes);
 
@@ -186,20 +188,22 @@ menu:
 					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
 					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", gpuTime, *p, *q);
 				break;
-			case 7: printf("gridSize,blockSize,p,q,clocks,seconds\n");
-					for (i = 1; i <= 1024; i *= 2) {
+			case 7: //first run takes longer, remove from statistics
+					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+
+					printf("gridSize,blockSize,p,q,clocks,seconds\n");
+					for (i = 1; i <= STATISTIC_MAX_GRIDSIZE; i *= STATISTIC_GRIDSIZE_MULTIPLIER) {
 						setGridSize(i);
-						for (j = 32; j <= 1024; j += 32) {
-							if (i * j > 16*640) {
+						for (j = 32; j <= STATISTIC_MAX_BLOCKSIZE; j += STATISTIC_BLOCKSIZE_STEPSIZE) {
+							if (i * j > STATISTIC_MAX_THREADS) {
 								continue;
 							}
 							setBlockSize(j);
-							printf("%d,%d,", getGridSize(), getBlockSize());
 							start = clock();
 							gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
 							end = clock();
 							gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-							printf("%lld,%lld,%lu,%lf\n", *p, *q, (unsigned long)(end-start), gpuTime);
+							printf("%d;%d;%lld;%lld;%lu;%lf\n", getGridSize(), getBlockSize(), *p, *q, (unsigned long)(end-start), gpuTime);
 							*p = 1;
 							*q = 1;
 						}
