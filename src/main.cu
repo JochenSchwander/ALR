@@ -27,7 +27,12 @@ int main(int argc, char *argv[]) {
 	
 	read_primes(primes);
 
-	*n = 20903LL * 20921LL;
+	//*n = 65521LL * 65537LL;  //n6, biggest possible n
+	//*n = 57037LL * 57041LL;  //n5
+	//*n = 40709LL * 40739LL;  //n4
+	//*n = 32621LL * 32633LL;  //n3
+	*n = 25087LL * 25097LL;  //n2
+	//*n = 20903LL * 20921LL;  //n1
 	//*n = 7331LL * 7333LL;
 	//*n = 902491;
 	e = 5;
@@ -194,7 +199,7 @@ menu:
 					printf("gridSize,blockSize,p,q,clocks,seconds\n");
 					for (i = 1; i <= STATISTIC_MAX_GRIDSIZE; i *= STATISTIC_GRIDSIZE_MULTIPLIER) {
 						setGridSize(i);
-						for (j = 32; j <= STATISTIC_MAX_BLOCKSIZE; j += STATISTIC_BLOCKSIZE_STEPSIZE) {
+						for (j = STATISTIC_BLOCKSIZE_STEPSIZE; j <= STATISTIC_MAX_BLOCKSIZE; j += STATISTIC_BLOCKSIZE_STEPSIZE) {
 							if (i * j > STATISTIC_MAX_THREADS) {
 								continue;
 							}
