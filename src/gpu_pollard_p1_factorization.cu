@@ -1,12 +1,20 @@
 #include "gpu_pollard_p1_factorization.h"
 #include "gpu_math_stuff.h"
+#include "device.h"
 #include <stdbool.h>
 
 #define GPU_POLLARD_P1_V1
 //#define GPU_POLLARD_P1_V2
 
-int gridSize = 2; // 2, 4, 8
+#ifdef MACBOOK
+int gridSize = 2;
 int blockSize = 32;
+#endif
+
+#ifdef XMG
+int gridSize = 3;
+int blockSize = 976;
+#endif
 
 //Weichen
 //#define DEBUG_GPU_ONLY_CALC

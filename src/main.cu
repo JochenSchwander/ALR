@@ -196,7 +196,7 @@ menu:
 			case 7: //first run takes longer, remove from statistics
 					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
 
-					printf("gridSize,blockSize,p,q,clocks,seconds\n");
+					printf("gridSize;blockSize;p;q;clocks;seconds\n");
 					for (i = 1; i <= STATISTIC_MAX_GRIDSIZE; i *= STATISTIC_GRIDSIZE_MULTIPLIER) {
 						setGridSize(i);
 						for (j = STATISTIC_BLOCKSIZE_STEPSIZE; j <= STATISTIC_MAX_BLOCKSIZE; j += STATISTIC_BLOCKSIZE_STEPSIZE) {

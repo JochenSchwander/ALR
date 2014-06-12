@@ -1,8 +1,7 @@
 #ifndef STATISTIC_DEFINITIONS_H
 #define STATISTIC_DEFINITIONS_H
 
-//#define MACBOOK
-#define XMG
+#include "device.h"
 
 #ifdef MACBOOK
 #define STATISTIC_MAX_THREADS (16*640)
