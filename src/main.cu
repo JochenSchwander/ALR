@@ -220,20 +220,31 @@ int main(int argc, char *argv[]) {
 				isEnd = true;
 			}
 			break;
-		case 8:
-			FILE *input, *output;
+		case 8:{
+			FILE *input, *output, *statOutput;
+			char filename[50];
+			char buff[25];
 			input = fopen("src/fileofN.txt", "r");
 			output = fopen("statistic/outputCalculation.txt", "a+");
 
+			//open and create statistic output file for excel import
+			time_t timeforFilename = time(0);
+			strftime(buff, 25, "%Y%m%d_%H_%M_%S", localtime(&timeforFilename));
+			sprintf(filename,"statistic/statOutput_%s.csv", buff);
+			statOutput = fopen(filename, "w");
+
 			fprintf(output,"_____________________________________________________________________________________________________________________________________________________________________________\n");
-			fprintf(output,"	TimeStamp		 |		  CPU(p,q)		   |		CPU time		|		  GPU(p,q)		   |		  GPU time		|						Result		\n");
+			fprintf(output," 	n		|	 	TimeStamp		 |		  CPU(p,q)		   |		CPU time		|		  GPU(p,q)		   |		  GPU time		|						Result		\n");
 
 			// read n's out of file and calculate
 			while ((fscanf(input, "%lld,", n)) != EOF) {
-				// timestamp output
-				char buff[25];
-				time_t now = time(0);
-				strftime(buff, 25, "%Y-%m-%d %H:%M:%S", localtime(&now));
+				// log n to output
+				fprintf(output, "%lld		", *n);
+				// log n to statOutput
+				fprintf(statOutput, "%lld;", *n);
+				//timestamp output
+				time_t nowtime = time(0);
+				strftime(buff, 25, "%Y-%m-%d %H:%M:%S", localtime(&nowtime));
 				fprintf(output, "%s		", buff);
 				// CPU calculation
 				start = clock();
@@ -244,6 +255,8 @@ int main(int argc, char *argv[]) {
 				cpuTime = (end - start) / (double) CLOCKS_PER_SEC;
 				// log result of CPU and time
 				fprintf(output, "%lf Sekunden		", cpuTime);
+				// log CPU time to statOutput
+				fprintf(statOutput, "%lf;", cpuTime);
 				// GPU calculation
 				start = clock();
 				gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
@@ -253,17 +266,22 @@ int main(int argc, char *argv[]) {
 				gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
 				// log result of GPU and time
 				fprintf(output, "%lf Sekunden		", gpuTime);
+				// log CPU time to statOutput
+				fprintf(statOutput, "%lf;", gpuTime);
 				// log result of CPU and GPU, calculate which is faster
 				if (cpuTime > gpuTime) {
 					fprintf(output, "GPU %lf Sekunden | %lf mal schneller\n", cpuTime - gpuTime, cpuTime / gpuTime);
 				} else {
 					fprintf(output, "CPU %lf Sekunden | %lf mal schneller\n", gpuTime - cpuTime, gpuTime / cpuTime);
 				}
+				fprintf(statOutput, "%lld;%lld;\n", *p, *q);
 				fprintf(output, "\n");
 			}
 
 			fclose(input);
 			fclose(output);
+			fclose(statOutput);
+			}
 			break;
 		default:
 			isEnd = true;
