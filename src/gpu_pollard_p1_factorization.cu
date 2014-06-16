@@ -96,6 +96,7 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 	cudaFree(primes_length_dev);
 	cudaFree(primes_dev);
 	cudaFree(a_dev);
+	cudaFree(factor_not_found_dev);
 
 
 	// calculate other factor on cpu
