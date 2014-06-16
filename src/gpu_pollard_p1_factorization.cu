@@ -7,8 +7,8 @@
 //#define GPU_POLLARD_P1_V2
 
 #ifdef MACBOOK
-int gridSize = 2;
-int blockSize = 32;
+int gridSize = 3;
+int blockSize = 976;
 #endif
 
 #ifdef XMG

@@ -11,6 +11,7 @@
 #include "statistic_definitions.h"
 
 
+
 void read_primes(unsigned long int *primes);
 
 int main(int argc, char *argv[]) {
@@ -30,7 +31,7 @@ int main(int argc, char *argv[]) {
 	//*n = 65521LL * 65537LL;  //n6, biggest possible n
 	//*n = 57037LL * 57041LL;  //n5
 	//*n = 40709LL * 40739LL;  //n4
-	//*n = 32621LL * 32633LL;  //n3
+	//*n = 32621LL * 32633LL;  //n3!
 	*n = 25087LL * 25097LL;  //n2
 	//*n = 20903LL * 20921LL;  //n1
 	//*n = 7331LL * 7333LL;
@@ -209,6 +210,7 @@ menu:
 							end = clock();
 							gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
 							printf("%d;%d;%lld;%lld;%lu;%lf\n", getGridSize(), getBlockSize(), *p, *q, (unsigned long)(end-start), gpuTime);
+							sleep(2);
 							*p = 1;
 							*q = 1;
 						}
