@@ -250,6 +250,7 @@ int main(int argc, char *argv[]) {
 			input = fopen("src/fileofN.txt", "r");
 			output = fopen("statistic/outputCalculation.txt", "a+");
 
+			fprintf(output,"_____________________________________________________________________________________________________________________________________________________________________________\n");
 			fprintf(output,"	TimeStamp		 |		  CPU(p,q)		   |		CPU time		|		  GPU(p,q)		   |		  GPU time		|						Result		\n");
 
 			// read n's out of file and calculate

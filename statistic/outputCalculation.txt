@@ -3,3 +3,18 @@
 
 2014-06-16 11:07:45		(C) p=25087, q=25097		0.001032 Sekunden		(G) p=25087, q=25097		5.270555 Sekunden		CPU 5.269523 Sekunden | 5107.126938 mal schneller
 
+	TimeStamp		 |		  CPU(p,q)		   |		CPU time		|		  GPU(p,q)		   |		  GPU time		|						Result		
+2014-06-16 14:01:22		(C) p=20921, q=20903		0.069043 Sekunden		(G) p=20921, q=20903		2.728959 Sekunden		CPU 2.659916 Sekunden | 39.525499 mal schneller
+
+2014-06-16 14:01:25		(C) p=25087, q=25097		0.000960 Sekunden		(G) p=25087, q=25097		5.271003 Sekunden		CPU 5.270043 Sekunden | 5490.628125 mal schneller
+
+2014-06-16 14:01:30		(C) p=7331, q=7333		0.172724 Sekunden		(G) p=7331, q=7333		4.762561 Sekunden		CPU 4.589837 Sekunden | 27.573244 mal schneller
+
+________________________________________________________________________________________________________________________________________________________________
+	TimeStamp		 |		  CPU(p,q)		   |		CPU time		|		  GPU(p,q)		   |		  GPU time		|						Result		
+2014-06-16 14:04:33		(C) p=20921, q=20903		0.068494 Sekunden		(G) p=20921, q=20903		2.701993 Sekunden		CPU 2.633499 Sekunden | 39.448609 mal schneller
+
+2014-06-16 14:04:36		(C) p=25087, q=25097		0.001042 Sekunden		(G) p=25087, q=25097		5.271134 Sekunden		CPU 5.270092 Sekunden | 5058.669866 mal schneller
+
+2014-06-16 14:04:41		(C) p=7331, q=7333		0.179934 Sekunden		(G) p=7331, q=7333		4.763009 Sekunden		CPU 4.583075 Sekunden | 26.470867 mal schneller
+
