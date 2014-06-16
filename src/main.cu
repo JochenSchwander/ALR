@@ -247,14 +247,13 @@ int main(int argc, char *argv[]) {
 			break;
 		case 8:
 			FILE *input, *output;
-			input = fopen("src/listofNumbers.txt", "r");
-			output = fopen("src/statistic/outputCalculation.txt", "a+");
+			input = fopen("src/fileofN.txt", "r");
+			output = fopen("statistic/outputCalculation.txt", "a+");
 
-			fprintf(output,
-					"\nTimeStamp 	|	CPU(p,q)	|	CPU time	|	GPU(p,q)	|	GPU time	|	Result\n");
+			fprintf(output,"	TimeStamp		 |		  CPU(p,q)		   |		CPU time		|		  GPU(p,q)		   |		  GPU time		|						Result		\n");
 
 			// read n's out of file and calculate
-			while ((fscanf(input, "%lu,", &n)) != EOF) {
+			while ((fscanf(input, "%lld,", n)) != EOF) {
 				// timestamp output
 				char buff[25];
 				time_t now = time(0);
@@ -265,7 +264,7 @@ int main(int argc, char *argv[]) {
 				pollard_p1_factorization(*n, p, q, primes, primes_length);
 				end = clock();
 				// log result of p and q
-				fprintf(output, "C p=%lld, q=%lld		", *p, *q);
+				fprintf(output, "(C) p=%lld, q=%lld		", *p, *q);
 				cpuTime = (end - start) / (double) CLOCKS_PER_SEC;
 				// log result of CPU and time
 				fprintf(output, "%lf Sekunden		", cpuTime);
@@ -274,7 +273,7 @@ int main(int argc, char *argv[]) {
 				gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
 				end = clock();
 				// log result of p and q
-				fprintf(output, "G p=%lld, q=%lld		", *p, *q);
+				fprintf(output, "(G) p=%lld, q=%lld		", *p, *q);
 				gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
 				// log result of GPU and time
 				fprintf(output, "%lf Sekunden		", gpuTime);
@@ -286,8 +285,11 @@ int main(int argc, char *argv[]) {
 					fprintf(output, "CPU %lf Sekunden | %lf mal schneller\n",
 							gpuTime - cpuTime, gpuTime / cpuTime);
 				}
+				fprintf(output, "\n");
 			}
+
 			fclose(input);
+			fclose(output);
 			break;
 		default:
 			isEnd = true;
