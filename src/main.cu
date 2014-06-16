@@ -23,6 +23,8 @@ int main(int argc, char *argv[]) {
 
 	long long int *p, *q, *n, e, d;
 	n = (long long int*) malloc(sizeof(long long int));
+	p = (long long int*) malloc(sizeof(long long int));
+	q = (long long int*) malloc(sizeof(long long int));
 
 	read_primes(primes);
 
@@ -30,8 +32,8 @@ int main(int argc, char *argv[]) {
 	//*n = 57037LL * 57041LL;  //n5
 	//*n = 40709LL * 40739LL;  //n4
 	//*n = 32621LL * 32633LL;  //n3!
-	*n = 25087LL * 25097LL;  //n2
-	//*n = 20903LL * 20921LL;  //n1
+	//*n = 25087LL * 25097LL;  //n2
+	*n = 20903LL * 20921LL;  //n1
 	//*n = 7331LL * 7333LL;
 	//*n = 902491;
 	e = 5;
@@ -62,8 +64,9 @@ int main(int argc, char *argv[]) {
 		printf("Eingabe choice: ");
 		scanf("%d", &choice);
 
-		menu: p = (long long int*) malloc(sizeof(long long int));
-		q = (long long int*) malloc(sizeof(long long int));
+menu: 
+		*p = 1;
+		*q = 1;
 
 		switch (choice) {
 		case 1:
@@ -155,7 +158,6 @@ int main(int argc, char *argv[]) {
 			printf("Eingabe e: ");
 			scanf("%lld", &e);
 			printf("You input n=%lld und e=%lld \n", *n, e);
-
 			printf("------------- Ausgabe -------------\n");
 			printf("========= CPU ========\n");
 			printf("CPU berchnung wird gestartet...\n");
@@ -200,10 +202,10 @@ int main(int argc, char *argv[]) {
 			gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
 
 			printf("gridSize;blockSize;p;q;clocks;seconds\n");
-			for (i = 1; i <= STATISTIC_MAX_GRIDSIZE; i *= STATISTIC_GRIDSIZE_MULTIPLIER) {
+			for (i = STATISTIC_MULTIPROCESSORS; i <= STATISTIC_MAX_GRIDSIZE; i += STATISTIC_MULTIPROCESSORS) {
 				setGridSize(i);
 				for (j = STATISTIC_BLOCKSIZE_STEPSIZE; j <= STATISTIC_MAX_BLOCKSIZE; j += STATISTIC_BLOCKSIZE_STEPSIZE) {
-					if (i * j > STATISTIC_MAX_THREADS) {
+					if ((i / STATISTIC_MULTIPROCESSORS) * j > STATISTIC_MAX_THREADS_PER_MULTIPROCESSOR) {
 						continue;
 					}
 					setBlockSize(j);
@@ -269,9 +271,11 @@ int main(int argc, char *argv[]) {
 			isEnd = true;
 			break;
 		}
-		free(p);
-		free(q);
 	}
+
+	free(n);
+	free(p);
+	free(q);
 
 	return 0;
 }
