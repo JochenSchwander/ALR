@@ -210,7 +210,6 @@ menu:
 							end = clock();
 							gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
 							printf("%d;%d;%lld;%lld;%lu;%lf\n", getGridSize(), getBlockSize(), *p, *q, (unsigned long)(end-start), gpuTime);
-							sleep(2);
 							*p = 1;
 							*q = 1;
 						}
