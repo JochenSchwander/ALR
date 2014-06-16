@@ -1,0 +1,5 @@
+	TimeStamp		 |		  CPU(p,q)		   |		CPU time		|		  GPU(p,q)		   |		  GPU time		|						Result		
+2014-06-16 11:07:43		(C) p=20921, q=20903		0.071538 Sekunden		(G) p=20921, q=20903		2.686149 Sekunden		CPU 2.614611 Sekunden | 37.548562 mal schneller
+
+2014-06-16 11:07:45		(C) p=25087, q=25097		0.001032 Sekunden		(G) p=25087, q=25097		5.270555 Sekunden		CPU 5.269523 Sekunden | 5107.126938 mal schneller
+
