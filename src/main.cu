@@ -10,13 +10,12 @@
 #include <string.h>
 #include "statistic_definitions.h"
 
-
-
 void read_primes(unsigned long int *primes);
 
 int main(int argc, char *argv[]) {
 	unsigned long int primes_length = 78498;
-	unsigned long int *primes = (unsigned long int *) malloc(sizeof(unsigned long int) * primes_length);
+	unsigned long int *primes = (unsigned long int *) malloc(
+			sizeof(unsigned long int) * primes_length);
 	int i, j;
 	bool statisticMode = false;
 
@@ -24,8 +23,8 @@ int main(int argc, char *argv[]) {
 	clock_t start, end;
 
 	long long int *p, *q, *n, e, d;
-	n = (long long int*)malloc(sizeof(long long int));
-	
+	n = (long long int*) malloc(sizeof(long long int));
+
 	read_primes(primes);
 
 	//*n = 65521LL * 65537LL;  //n6, biggest possible n
@@ -51,7 +50,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// TODO add menu point for GPU and CPU calculation seperat
-	while(!isEnd){
+	while (!isEnd) {
 		//system("say Bitte waehlen sie einen Menuepunkt. Vergiss nicht, martin ist ein bob/!");
 		printf("------------- Menu ----------------\n");
 		printf("1. CPU & GPU - starten mit Standard n und e ...\n");
@@ -61,165 +60,240 @@ int main(int argc, char *argv[]) {
 		printf("5. GPU - starten mit Standard n ...\n");
 		printf("6. GPU - Eingabe von n ...\n");
 		printf("7. GPU - BlockSize/GridSize Statistik\n");
-		printf("8. Exit the program ...\n");
+		printf("8. GPU - input n's out of file (statistic mode)\n");
+		printf("99. Exit the program ...\n");
 		printf("Eingabe choice: ");
-		scanf("%d",&choice);
+		scanf("%d", &choice);
 
-menu:
-		p = (long long int*)malloc(sizeof(long long int));
-		q = (long long int*)malloc(sizeof(long long int));
+		menu: p = (long long int*) malloc(sizeof(long long int));
+		q = (long long int*) malloc(sizeof(long long int));
 
-		switch(choice){
-			case 1:	printf("------------- Ausgabe -------------\n");
-					printf("========= CPU ========\n");
-					printf("CPU berchnung wird gestartet...\n");
-					start = clock();
-					pollard_p1_factorization(*n, p, q, primes, primes_length);
-					end = clock();
-					cpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", cpuTime, *p, *q);
-					d = calculatePrivateKey(e,*p,*q);
-					printf("d = %lld\n", d);
+		switch (choice) {
+		case 1:
+			printf("------------- Ausgabe -------------\n");
+			printf("========= CPU ========\n");
+			printf("CPU berchnung wird gestartet...\n");
+			start = clock();
+			pollard_p1_factorization(*n, p, q, primes, primes_length);
+			end = clock();
+			cpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+			printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q,
+					(unsigned long) (end - start));
+			printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n",
+					cpuTime, *p, *q);
+			d = calculatePrivateKey(e, *p, *q);
+			printf("d = %lld\n", d);
 
-					printf("========= GPU ========\n");
-					printf("GPU Register werden beschrieben\n");
-					printf("GPU berechnung wird gestartet\n");
-					start = clock();
-					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
-					end = clock();
-					gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", gpuTime, *p, *q);
+			printf("========= GPU ========\n");
+			printf("GPU Register werden beschrieben\n");
+			printf("GPU berechnung wird gestartet\n");
+			start = clock();
+			gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+			end = clock();
+			gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+			printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q,
+					(unsigned long) (end - start));
+			printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n",
+					gpuTime, *p, *q);
 
-					printf("---------------------------\n");
-					if(cpuTime > gpuTime) {
-						printf("GPU war %lf Sekunden schneller\n", cpuTime-gpuTime);
-						printf("GPU war %lf mal schneller\n", cpuTime/gpuTime);
-					} else {
-						printf("CPU war %lf Sekunden schneller\n", gpuTime-cpuTime);
-						printf("CPU war %lf mal schneller\n", gpuTime/cpuTime);
+			printf("---------------------------\n");
+			if (cpuTime > gpuTime) {
+				printf("GPU war %lf Sekunden schneller\n", cpuTime - gpuTime);
+				printf("GPU war %lf mal schneller\n", cpuTime / gpuTime);
+			} else {
+				printf("CPU war %lf Sekunden schneller\n", gpuTime - cpuTime);
+				printf("CPU war %lf mal schneller\n", gpuTime / cpuTime);
+			}
+			break;
+		case 2:
+			printf("Eingabe n: ");
+			scanf("%lld", n);
+			printf("Eingabe e: ");
+			scanf("%lld", &e);
+			printf("You input n=%lld und e=%lld \n", *n, e);
+
+			printf("------------- Ausgabe -------------\n");
+			printf("========= CPU ========\n");
+			printf("CPU berchnung wird gestartet...\n");
+			start = clock();
+			pollard_p1_factorization(*n, p, q, primes, primes_length);
+			end = clock();
+			cpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+			printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q,
+					(unsigned long) (end - start));
+			printf("Ergebnis nach %lf Sekunden : \np = %lld\nq = %lld \n",
+					cpuTime, *p, *q);
+			d = calculatePrivateKey(e, *p, *q);
+			printf("d = %lld\n", d);
+
+			printf("========= GPU ========\n");
+			printf("GPU Register werden beschrieben\n");
+			printf("GPU berechnung wird gestartet\n");
+			start = clock();
+			gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+			end = clock();
+			gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+			printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q,
+					(unsigned long) (end - start));
+			printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n",
+					gpuTime, *p, *q);
+
+			printf("---------------------------\n");
+			if (cpuTime > gpuTime) {
+				printf("GPU war %lf Sekunden schneller\n", cpuTime - gpuTime);
+				printf("GPU war %lf mal schneller\n", cpuTime / gpuTime);
+			} else {
+				printf("CPU war %lf Sekunden schneller\n", gpuTime - cpuTime);
+				printf("CPU war %lf mal schneller\n", gpuTime / cpuTime);
+			}
+			break;
+		case 3:
+			printf("------------- Ausgabe -------------\n");
+			printf("========= CPU ========\n");
+			printf("CPU berchnung wird gestartet...\n");
+			start = clock();
+			pollard_p1_factorization(*n, p, q, primes, primes_length);
+			end = clock();
+			cpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+			printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q,
+					(unsigned long) (end - start));
+			printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n",
+					cpuTime, *p, *q);
+			d = calculatePrivateKey(e, *p, *q);
+			printf("d = %lld\n", d);
+			break;
+		case 4:
+			printf("Eingabe n: ");
+			scanf("%lld", n);
+			printf("Eingabe e: ");
+			scanf("%lld", &e);
+			printf("You input n=%lld und e=%lld \n", *n, e);
+
+			printf("------------- Ausgabe -------------\n");
+			printf("========= CPU ========\n");
+			printf("CPU berchnung wird gestartet...\n");
+			start = clock();
+			pollard_p1_factorization(*n, p, q, primes, primes_length);
+			end = clock();
+			cpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+			printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q,
+					(unsigned long) (end - start));
+			printf("Ergebnis nach %lf Sekunden : \np = %lld\nq = %lld \n",
+					cpuTime, *p, *q);
+			d = calculatePrivateKey(e, *p, *q);
+			printf("d = %lld\n", d);
+			break;
+		case 5:
+			printf("------------- Ausgabe -------------\n");
+			printf("========= GPU ========\n");
+			printf("GPU Register werden beschrieben\n");
+			printf("GPU berechnung wird gestartet\n");
+			start = clock();
+			gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+			end = clock();
+			gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+			printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q,
+					(unsigned long) (end - start));
+			printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n",
+					gpuTime, *p, *q);
+			break;
+		case 6:
+			printf("Eingabe n: ");
+			scanf("%lld", n);
+			printf("You input n=%lld\n", *n);
+
+			printf("------------- Ausgabe -------------\n");
+			printf("========= GPU ========\n");
+			printf("GPU Register werden beschrieben\n");
+			printf("GPU berechnung wird gestartet\n");
+			start = clock();
+			gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+			end = clock();
+			gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+			printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q,
+					(unsigned long) (end - start));
+			printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n",
+					gpuTime, *p, *q);
+			break;
+		case 7: //first run takes longer, remove from statistics
+			gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+
+			printf("gridSize;blockSize;p;q;clocks;seconds\n");
+			for (i = 1; i <= STATISTIC_MAX_GRIDSIZE; i *=
+					STATISTIC_GRIDSIZE_MULTIPLIER) {
+				setGridSize(i);
+				for (j = STATISTIC_BLOCKSIZE_STEPSIZE;
+						j <= STATISTIC_MAX_BLOCKSIZE; j +=
+								STATISTIC_BLOCKSIZE_STEPSIZE) {
+					if (i * j > STATISTIC_MAX_THREADS) {
+						continue;
 					}
-				break;
-			case 2:	printf("Eingabe n: ");
-					scanf("%lld",n);
-					printf("Eingabe e: ");
-					scanf("%lld",&e);
-					printf("You input n=%lld und e=%lld \n", *n, e);
-
-					printf("------------- Ausgabe -------------\n");
-					printf("========= CPU ========\n");
-					printf("CPU berchnung wird gestartet...\n");
+					setBlockSize(j);
 					start = clock();
-					pollard_p1_factorization(*n, p, q, primes, primes_length);
+					gpu_pollard_p1_factorization(*n, p, q, primes,
+							primes_length);
 					end = clock();
-					cpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-					printf("Ergebnis nach %lf Sekunden : \np = %lld\nq = %lld \n", cpuTime, *p, *q);
-					d = calculatePrivateKey(e,*p,*q);
-					printf("d = %lld\n", d);
+					gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+					printf("%d;%d;%lld;%lld;%lu;%lf\n", getGridSize(),
+							getBlockSize(), *p, *q,
+							(unsigned long) (end - start), gpuTime);
+					*p = 1;
+					*q = 1;
+				}
+			}
+			if (statisticMode) {
+				isEnd = true;
+			}
+			break;
+		case 8:
+			FILE *input, *output;
+			input = fopen("src/fileofN.txt", "r");
+			output = fopen("statistic/outputCalculation.txt", "a+");
 
-					printf("========= GPU ========\n");
-					printf("GPU Register werden beschrieben\n");
-					printf("GPU berechnung wird gestartet\n");
-					start = clock();
-					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
-					end = clock();
-					gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", gpuTime, *p, *q);
+			fprintf(output,"	TimeStamp		 |		  CPU(p,q)		   |		CPU time		|		  GPU(p,q)		   |		  GPU time		|						Result		\n");
 
-					printf("---------------------------\n");
-					if(cpuTime > gpuTime) {
-						printf("GPU war %lf Sekunden schneller\n", cpuTime-gpuTime);
-						printf("GPU war %lf mal schneller\n", cpuTime/gpuTime);
-					} else {
-						printf("CPU war %lf Sekunden schneller\n", gpuTime-cpuTime);
-						printf("CPU war %lf mal schneller\n", gpuTime/cpuTime);
-					}
-				break;
-			case 3: printf("------------- Ausgabe -------------\n");
-					printf("========= CPU ========\n");
-					printf("CPU berchnung wird gestartet...\n");
-					start = clock();
-					pollard_p1_factorization(*n, p, q, primes, primes_length);
-					end = clock();
-					cpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", cpuTime, *p, *q);
-					d = calculatePrivateKey(e,*p,*q);
-					printf("d = %lld\n", d);
-				break;
-			case 4: printf("Eingabe n: ");
-					scanf("%lld",n);
-					printf("Eingabe e: ");
-					scanf("%lld",&e);
-					printf("You input n=%lld und e=%lld \n", *n, e);
+			// read n's out of file and calculate
+			while ((fscanf(input, "%lld,", n)) != EOF) {
+				// timestamp output
+				char buff[25];
+				time_t now = time(0);
+				strftime(buff, 25, "%Y-%m-%d %H:%M:%S", localtime(&now));
+				fprintf(output, "%s		", buff);
+				// CPU calculation
+				start = clock();
+				pollard_p1_factorization(*n, p, q, primes, primes_length);
+				end = clock();
+				// log result of p and q
+				fprintf(output, "(C) p=%lld, q=%lld		", *p, *q);
+				cpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+				// log result of CPU and time
+				fprintf(output, "%lf Sekunden		", cpuTime);
+				// GPU calculation
+				start = clock();
+				gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+				end = clock();
+				// log result of p and q
+				fprintf(output, "(G) p=%lld, q=%lld		", *p, *q);
+				gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+				// log result of GPU and time
+				fprintf(output, "%lf Sekunden		", gpuTime);
+				// log result of CPU and GPU, calculate which is faster
+				if (cpuTime > gpuTime) {
+					fprintf(output, "GPU %lf Sekunden | %lf mal schneller\n",
+							cpuTime - gpuTime, cpuTime / gpuTime);
+				} else {
+					fprintf(output, "CPU %lf Sekunden | %lf mal schneller\n",
+							gpuTime - cpuTime, gpuTime / cpuTime);
+				}
+				fprintf(output, "\n");
+			}
 
-					printf("------------- Ausgabe -------------\n");
-					printf("========= CPU ========\n");
-					printf("CPU berchnung wird gestartet...\n");
-					start = clock();
-					pollard_p1_factorization(*n, p, q, primes, primes_length);
-					end = clock();
-					cpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-					printf("Ergebnis nach %lf Sekunden : \np = %lld\nq = %lld \n", cpuTime, *p, *q);
-					d = calculatePrivateKey(e,*p,*q);
-					printf("d = %lld\n", d);
-				break;
-			case 5: printf("------------- Ausgabe -------------\n");
-					printf("========= GPU ========\n");
-					printf("GPU Register werden beschrieben\n");
-					printf("GPU berechnung wird gestartet\n");
-					start = clock();
-					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
-					end = clock();
-					gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", gpuTime, *p, *q);
-				break;
-			case 6: printf("Eingabe n: ");
-					scanf("%lld",n);
-					printf("You input n=%lld\n", *n);
-
-					printf("------------- Ausgabe -------------\n");
-					printf("========= GPU ========\n");
-					printf("GPU Register werden beschrieben\n");
-					printf("GPU berechnung wird gestartet\n");
-					start = clock();
-					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
-					end = clock();
-					gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-					printf("p = %lld\nq = %lld in %lu clocks\n", *p, *q, (unsigned long)(end-start));
-					printf("Ergebnis nach (%lf) Sekunden : \np = %lld\nq = %lld \n", gpuTime, *p, *q);
-				break;
-			case 7: //first run takes longer, remove from statistics
-					gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
-
-					printf("gridSize;blockSize;p;q;clocks;seconds\n");
-					for (i = 1; i <= STATISTIC_MAX_GRIDSIZE; i *= STATISTIC_GRIDSIZE_MULTIPLIER) {
-						setGridSize(i);
-						for (j = STATISTIC_BLOCKSIZE_STEPSIZE; j <= STATISTIC_MAX_BLOCKSIZE; j += STATISTIC_BLOCKSIZE_STEPSIZE) {
-							if (i * j > STATISTIC_MAX_THREADS) {
-								continue;
-							}
-							setBlockSize(j);
-							start = clock();
-							gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
-							end = clock();
-							gpuTime = (end-start)/(double)CLOCKS_PER_SEC;
-							printf("%d;%d;%lld;%lld;%lu;%lf\n", getGridSize(), getBlockSize(), *p, *q, (unsigned long)(end-start), gpuTime);
-							*p = 1;
-							*q = 1;
-						}
-					}
-					if (statisticMode) {
-						isEnd = true;
-					}
-				break;
-			default: isEnd = true;
-				break;
+			fclose(input);
+			fclose(output);
+			break;
+		default:
+			isEnd = true;
+			break;
 		}
 		free(p);
 		free(q);
@@ -231,11 +305,11 @@ menu:
 void read_primes(unsigned long int *primes) {
 	FILE *datei;
 	unsigned long int prime;
-	int count = 0; 
-	
+	int count = 0;
+
 	datei = fopen("src/primes.txt", "r");
 	while ((fscanf(datei, "%lu,", &prime)) != EOF) {
-		primes[count++] = prime; 
-	} 
-	fclose(datei); 
+		primes[count++] = prime;
+	}
+	fclose(datei);
 }
