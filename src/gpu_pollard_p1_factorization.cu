@@ -16,7 +16,7 @@ int blockSize = 16;
 //Weichen
 //#define DEBUG_GPU_ONLY_CALC
 //#define BINARY_GCD
-#define CUDA_ERROR_LOGGING
+//#define CUDA_ERROR_LOGGING
 
 #ifdef CUDA_ERROR_LOGGING
 #include <stdio.h>
