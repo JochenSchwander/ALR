@@ -16,6 +16,11 @@ int blockSize = 16;
 //Weichen
 //#define DEBUG_GPU_ONLY_CALC
 //#define BINARY_GCD
+#define CUDA_ERROR_LOGGING
+
+#ifdef CUDA_ERROR_LOGGING
+#include <stdio.h>
+#endif
 
 #ifdef DEBUG_GPU_ONLY_CALC
 #include <stdio.h>
@@ -47,6 +52,10 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 	bool factor_not_found = true;
 	bool *factor_not_found_dev;
 
+#ifdef CUDA_ERROR_LOGGING
+	FILE *errorlog = fopen("error.log", "a");
+	cudaError_t error;
+#endif
 
 	// allocate memory on device
 	cudaMalloc((void **) &n_dev, sizeof(long long int));
@@ -74,7 +83,14 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 
 		// calculate a prime factor on gpu
 		gpu_pollard_p1_factor<<<gridSize,blockSize>>>(n_dev, a_dev, primes_dev, primes_length_dev, p_dev, factor_not_found_dev);
+#ifndef CUDA_ERROR_LOGGING
 		cudaDeviceSynchronize();
+#else
+		error = cudaDeviceSynchronize();
+		if (error != cudaSuccess) {
+			fprintf(errorlog, "gridSize = %d, blockSize = %d, cudaError: %s\n", getGridSize(), getBlockSize(), cudaGetErrorString(error));
+		}
+#endif
 
 #ifdef DEBUG_GPU_ONLY_CALC
 		end = clock();
@@ -84,6 +100,10 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 		// check if factor allready found
 		cudaMemcpy(&factor_not_found, factor_not_found_dev, sizeof(bool), cudaMemcpyDeviceToHost);
 	}
+
+#ifdef CUDA_ERROR_LOGGING
+	fclose(errorlog);
+#endif
 
 	// copy result to host
 	cudaMemcpy(p, p_dev, sizeof(long long int), cudaMemcpyDeviceToHost);

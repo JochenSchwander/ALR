@@ -5,7 +5,7 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-#define EUCLID_UNROLLED
+//#define EUCLID_UNROLLED
 
 __device__ inline long long int gpu_euclidean_gcd(long long int a, long long int b) {
 #ifdef EUCLID_UNROLLED
