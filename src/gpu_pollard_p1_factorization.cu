@@ -15,6 +15,7 @@ int blockSize = 16;
 
 //Weichen
 //#define DEBUG_GPU_ONLY_CALC
+#define BINARY_GCD
 
 #ifdef DEBUG_GPU_ONLY_CALC
 #include <stdio.h>
@@ -118,7 +119,11 @@ __global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, 
 		}
 
 		//check if g is a factor of n
+#ifdef BINARY_GCD
+		g = gpu_binary_gcd(e - 1, n);
+#else
 		g = gpu_euclidean_gcd(e - 1, n);
+#endif
 		if (g > 1) {
 			if (g == n) {
 				//found trivial factor n of n
