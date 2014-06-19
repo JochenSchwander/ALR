@@ -23,6 +23,8 @@ __device__ inline long long int gpu_euclidean_gcd(long long int a_in, long long 
 	return a;
 }
 
+__device__ inline long long int 
+
 __device__ inline long long int gpu_power_mod(long long int base, long long int exponent, long long int modulus) {
 	long long int i;
 	long long int number = base;

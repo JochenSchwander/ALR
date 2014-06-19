@@ -3,17 +3,14 @@
 #include "device.h"
 #include <stdbool.h>
 
-#define GPU_POLLARD_P1_V1
-//#define GPU_POLLARD_P1_V2
-
 #ifdef MACBOOK
 int gridSize = 3;
 int blockSize = 976;
 #endif
 
 #ifdef XMG
-int gridSize = 3;
-int blockSize = 976;
+int gridSize = 12;
+int blockSize = 16;
 #endif
 
 //Weichen
@@ -98,49 +95,30 @@ void gpu_pollard_p1_factorization(long long int n, long long int* p, long long i
 	cudaFree(a_dev);
 	cudaFree(factor_not_found_dev);
 
-
 	// calculate other factor on cpu
 	*q = n / *p;
 }
 
 __global__ void gpu_pollard_p1_factor(long long int *n_in, long long int *a_in, unsigned long int *primes, unsigned long int *primes_length_in, long long int *factor_out, bool *factor_not_found_dev) {
 	unsigned int b;
-	const unsigned int b_max = 1000000;
 	long long int  e, p, i, g;
 	long long int n = *n_in;
-	//long long int a = *a_in;
 	unsigned long int primes_length = *primes_length_in;
 
-	for (b = 2 + blockIdx.x * blockDim.x + threadIdx.x; b < b_max && *factor_not_found_dev; b += blockDim.x * gridDim.x) {
-
+	for (b = 2 + blockIdx.x * blockDim.x + threadIdx.x; b < 1000000 && *factor_not_found_dev; b += blockDim.x * gridDim.x) {
 		//calculate e
-#ifdef GPU_POLLARD_P1_V2
-		e = 1;
-#endif
-#ifdef GPU_POLLARD_P1_V1
 		e = *a_in;
-#endif
 		for (i = 0; i < primes_length; i++) {
 			p = (long long int) primes[i];
 			if (b >= p) {
-#ifdef GPU_POLLARD_P1_V2
-				e *= gpu_power_mod(p, log((double)b) / log((double) p), n);
-#endif
-#ifdef GPU_POLLARD_P1_V1
 				e = gpu_power_mod(e, p, n);
-#endif
 			} else {
 				break;
 			}
 		}
 
 		//check if g is a factor of n
-#ifdef GPU_POLLARD_P1_V2
-		g = gpu_euclidean_gcd(gpu_power_mod(*a_in, e - 1, n), n);
-#endif
-#ifdef GPU_POLLARD_P1_V1
 		g = gpu_euclidean_gcd(e - 1, n);
-#endif
 		if (g > 1) {
 			if (g == n) {
 				//found trivial factor n of n
