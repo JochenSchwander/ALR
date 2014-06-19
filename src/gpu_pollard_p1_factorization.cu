@@ -15,7 +15,7 @@ int blockSize = 16;
 
 //Weichen
 //#define DEBUG_GPU_ONLY_CALC
-#define BINARY_GCD
+//#define BINARY_GCD
 
 #ifdef DEBUG_GPU_ONLY_CALC
 #include <stdio.h>

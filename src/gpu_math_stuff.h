@@ -5,20 +5,40 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
+#define EUCLID_UNROLLED
+
 __device__ inline long long int gpu_euclidean_gcd(long long int a, long long int b) {
-	long long int t, m;
+#ifdef EUCLID_UNROLLED
+	if (b > a) {
+		goto euclidean_gcd_b_larger;
+	}
+
+	while(1) {
+		a = a % b;
+		if (a == 0) {
+			return b;
+		}
+euclidean_gcd_b_larger:
+		b = b % a;
+		if (b == 0) {
+			return a;
+		}
+	}
+#else
+	long long int t;
 
 	if (b > a) {
 		t = a; a = b; b = t;
 	}
 
 	while (b != 0) {
-		m = a % b;
+		t = a % b;
 		a = b;
-		b = m;
+		b = t;
 	}
 
 	return a;
+#endif
 }
 
 __device__ inline long long int gpu_binary_gcd(long long int u, long long int v) {
