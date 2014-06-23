@@ -241,21 +241,25 @@ menu:
 			// read n's out of file and calculate
 			while ((fscanf(input, "%lld,", n)) != EOF) {
 				// log n to output
+			printf("%lld		", *n);
 				fprintf(output, "%lld		", *n);
 				// log n to statOutput
 				fprintf(statOutput, "%lld;", *n);
 				//timestamp output
 				time_t nowtime = time(0);
 				strftime(buff, 25, "%Y-%m-%d %H:%M:%S", localtime(&nowtime));
+			printf("%s		", buff);
 				fprintf(output, "%s		", buff);
 				// CPU calculation
 				start = clock();
 				pollard_p1_factorization(*n, p, q, primes, primes_length);
 				end = clock();
 				// log result of p and q
+			printf("(C) p=%lld, q=%lld		", *p, *q);
 				fprintf(output, "(C) p=%lld, q=%lld		", *p, *q);
 				cpuTime = (end - start) / (double) CLOCKS_PER_SEC;
 				// log result of CPU and time
+			printf("%lf Sekunden		", cpuTime);
 				fprintf(output, "%lf Sekunden		", cpuTime);
 				// log CPU time to statOutput
 				fprintf(statOutput, "%lf;", cpuTime);
@@ -264,19 +268,24 @@ menu:
 				gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
 				end = clock();
 				// log result of p and q
+			printf("(G) p=%lld, q=%lld		", *p, *q);
 				fprintf(output, "(G) p=%lld, q=%lld		", *p, *q);
 				gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
 				// log result of GPU and time
+			printf("%lf Sekunden		", gpuTime);
 				fprintf(output, "%lf Sekunden		", gpuTime);
 				// log CPU time to statOutput
 				fprintf(statOutput, "%lf;", gpuTime);
 				// log result of CPU and GPU, calculate which is faster
 				if (cpuTime > gpuTime) {
+				printf("GPU %lf Sekunden | %lf mal schneller\n", cpuTime - gpuTime, cpuTime / gpuTime);
 					fprintf(output, "GPU %lf Sekunden | %lf mal schneller\n", cpuTime - gpuTime, cpuTime / gpuTime);
 				} else {
+				printf("CPU %lf Sekunden | %lf mal schneller\n", gpuTime - cpuTime, gpuTime / cpuTime);
 					fprintf(output, "CPU %lf Sekunden | %lf mal schneller\n", gpuTime - cpuTime, gpuTime / cpuTime);
 				}
 				fprintf(statOutput, "%lld;%lld;\n", *p, *q);
+			printf("\n");
 				fprintf(output, "\n");
 			}
 
