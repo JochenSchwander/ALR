@@ -4,13 +4,18 @@
 #include <stdbool.h>
 
 #ifdef MACBOOK
-int gridSize = 3;
-int blockSize = 976;
+int gridSize = 6;
+int blockSize = 32;
 #endif
 
 #ifdef XMG
 int gridSize = 12;
 int blockSize = 16;
+#endif
+
+#ifdef GTX780
+int gridSize = 12;
+int blockSize = 32;
 #endif
 
 //Weichen
