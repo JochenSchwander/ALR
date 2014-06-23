@@ -226,13 +226,13 @@ menu:
 			FILE *input, *output, *statOutput;
 			char filename[50];
 			char buff[25];
-			input = fopen("src/fileofN.txt", "r");
-			output = fopen("statistic/outputCalculation.txt", "a+");
+			input = fopen("fileofN.txt", "r");
+			output = fopen("outputCalculation.txt", "a+");
 
 			//open and create statistic output file for excel import
 			time_t timeforFilename = time(0);
 			strftime(buff, 25, "%Y%m%d_%H_%M_%S", localtime(&timeforFilename));
-			sprintf(filename,"statistic/statOutput_%s.csv", buff);
+			sprintf(filename,"statOutput_%s.csv", buff);
 			statOutput = fopen(filename, "w");
 
 			fprintf(output,"_____________________________________________________________________________________________________________________________________________________________________________\n");
