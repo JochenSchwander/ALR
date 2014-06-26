@@ -226,12 +226,14 @@ int main(int argc, char *argv[]) {
 			char filename[50];
 			char buff[25];
 			input = fopen("fileofN_check.txt", "r");
-			//output = fopen("statistic/outputCalculation.txt", "a+");
+			//NOT IN SUBFOLDER "statistic" -> program crashes if folder isn't there...
+			//output = fopen("outputCalculation.txt", "a+");
 
 			//open and create statistic output file for excel import
 			time_t timeforFilename = time(0);
 			strftime(buff, 25, "%Y%m%d_%H_%M_%S", localtime(&timeforFilename));
-			sprintf(filename, "statistic/statOutput_%s.csv", buff);
+			//NOT IN SUBFOLDER "statistic" -> program crashes if folder isn't there...
+			sprintf(filename, "statOutput_%s.csv", buff);
 			statOutput = fopen(filename, "w");
 
 			//fprintf(output, "_____________________________________________________________________________________________________________________________________________________________________________\n");
@@ -286,6 +288,10 @@ int main(int argc, char *argv[]) {
 				fprintf(statOutput, "%lld;%lld;\n", *p, *q);
 				printf("\n");
 				//fprintf(output, "\n");
+
+				//reset p and q just to be save
+				*p = 1;
+				*q = 1;
 			}
 
 			fclose(input);
