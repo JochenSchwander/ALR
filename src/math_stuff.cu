@@ -1,18 +1,16 @@
 #include "math_stuff.h"
 
-long long int euclidean_gcd(long long int a_in, long long int b_in) {
-	long long int a = a_in;
-	long long int b = b_in;
-	long long int t, m;
+long long int euclidean_gcd(long long int a, long long int b) {
+	long long int t;
 
 	if (b > a) {
 		t = a; a = b; b = t;
 	}
 
 	while (b != 0) {
-		m = a % b;
+		t = a % b;
 		a = b;
-		b = m;
+		b = t;
 	}
 
 	return a;

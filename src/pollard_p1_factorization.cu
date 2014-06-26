@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define DEBUG_POLLARD_P1
+//#define DEBUG_POLLARD_P1
 #ifdef DEBUG_POLLARD_P1
 #include <stdio.h>
 #endif
@@ -17,14 +17,12 @@ void pollard_p1_factorization(long long int n, long long int* p, long long int* 
 
 long long int pollard_p1_factor(long long int n, unsigned long int *primes, unsigned long int primes_length) {
 	long long int b, e, p, i, a, g;
+	const long long int b_max = 1000000;
 
 	for (a = 2; a < 1000; a++) {
+		for (b = 2; b < b_max; b++) {
 #ifdef DEBUG_POLLARD_P1
-		printf("PP1: a = %lld\n", a);
-#endif
-		for (b = 2; b < 1000000; b++) {
-#ifdef DEBUG_POLLARD_P1
-			printf("PP1: b = %lld, ", b);
+			printf("PP1: a = %lld, b = %lld, ", a, b);
 #endif
 			//calculate e
 			e = a;
