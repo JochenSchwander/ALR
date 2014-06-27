@@ -313,6 +313,7 @@ menu:
 			sprintf(filename, "gridsize-blocksize-test_%s.csv", buff);
 			statOutput = fopen(filename, "w");
 
+			printf("n;gridSize;blockSize;p;q;clocks;seconds\n");
 			fprintf(statOutput, "n;gridSize;blockSize;p;q;clocks;seconds\n");
 
 			// read n's out of file and calculate
