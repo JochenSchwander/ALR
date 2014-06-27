@@ -32,6 +32,11 @@ int main(int argc, char *argv[]) {
 	double cpuTime, gpuTime;
 	bool isEnd = false;
 
+	FILE *input, *statOutput;
+	char filename[50];
+	char buff[25];
+	time_t timeforFilename;
+
 	if (argc > 1) {
 		if (strstr(argv[1], "-statistic") != NULL) {
 			statisticMode = true;
@@ -50,6 +55,7 @@ int main(int argc, char *argv[]) {
 		printf("6. GPU - Eingabe von n ...\n");
 		printf("7. GPU - BlockSize/GridSize Statistik ...\n");
 		printf("8. CPU & GPU - n's aus Datei einlesen und Statistik erstellen ...\n");
+		printf("9. GPU - BlockSize/GridSize Statistik mit n's aus Datei ...\n");
 		printf("0. Programm verlassen ...\n");
 		printf("Eingabe Menuepunkt: ");
 		scanf("%d", &choice);
@@ -206,7 +212,8 @@ menu:
 			gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
 			printf("Ergebnis nach %lf Sekunden / %lu clocks: \np = %lld\nq = %lld \n", gpuTime, (unsigned long) (end - start), *p, *q);
 			break;
-		case 7: //first run takes longer, remove from statistics
+		case 7: 
+			//first run takes longer, remove from statistics
 			gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
 
 			printf("gridSize;blockSize;p;q;clocks;seconds\n");
@@ -230,14 +237,11 @@ menu:
 				isEnd = true;
 			}
 			break;
-		case 8: {
-			FILE *input, *statOutput;
-			char filename[50];
-			char buff[25];
+		case 8:
 			input = fopen("fileofN_check.txt", "r");
 
 			//open and create statistic output file for excel import
-			time_t timeforFilename = time(0);
+			timeforFilename = time(0);
 			strftime(buff, 25, "%Y%m%d_%H_%M_%S", localtime(&timeforFilename));
 			//NOT IN SUBFOLDER "statistic" -> program crashes if folder isn't there...
 			sprintf(filename, "statOutput_%s.csv", buff);
@@ -295,7 +299,54 @@ menu:
 
 			fclose(input);
 			fclose(statOutput);
-		}
+			break;
+		case 9:
+			//first run takes longer, remove from statistics
+			gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+
+			input = fopen("fileofN_check.txt", "r");
+
+			//open and create statistic output file for excel import
+			timeforFilename = time(0);
+			strftime(buff, 25, "%Y%m%d_%H_%M_%S", localtime(&timeforFilename));
+			//NOT IN SUBFOLDER "statistic" -> program crashes if folder isn't there...
+			sprintf(filename, "gridsize-blocksize-test_%s.csv", buff);
+			statOutput = fopen(filename, "w");
+
+			fprintf(statOutput, "n;gridSize;blockSize;p;q;clocks;seconds\n");
+
+			// read n's out of file and calculate
+			while ((fscanf(input, "%lld,", n)) != EOF) {
+				printf("%lld;", *n);
+				fprintf(statOutput, "%lld;", *n);
+
+				//reset p and q just to be save
+				*p = 1;
+				*q = 1;
+
+				// GPU calculation
+				for (i = STATISTIC_MULTIPROCESSORS; i <= STATISTIC_MAX_GRIDSIZE; i += STATISTIC_MULTIPROCESSORS) {
+					setGridSize(i);
+					for (j = STATISTIC_BLOCKSIZE_STEPSIZE; j <= STATISTIC_MAX_BLOCKSIZE; j += STATISTIC_BLOCKSIZE_STEPSIZE) {
+						if ((i / STATISTIC_MULTIPROCESSORS) * j > STATISTIC_MAX_THREADS_PER_MULTIPROCESSOR) {
+							continue;
+						}
+						setBlockSize(j);
+						start = clock();
+						gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
+						end = clock();
+						gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
+						printf("%d;%d;%lld;%lld;%lu;%lf\n", getGridSize(), getBlockSize(), *p, *q, (unsigned long) (end - start), gpuTime);
+						fprintf(statOutput, "%d;%d;%lld;%lld;%lu;%lf\n", getGridSize(), getBlockSize(), *p, *q, (unsigned long) (end - start), gpuTime);
+						*p = 1;
+						*q = 1;
+					}
+				}
+			}
+
+			fclose(input);
+			fclose(statOutput);
+
 			break;
 		default:
 			isEnd = true;
