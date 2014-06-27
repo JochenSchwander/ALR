@@ -318,9 +318,6 @@ menu:
 
 			// read n's out of file and calculate
 			while ((fscanf(input, "%lld,", n)) != EOF) {
-				printf("%lld;", *n);
-				fprintf(statOutput, "%lld;", *n);
-
 				//reset p and q just to be save
 				*p = 1;
 				*q = 1;
@@ -337,8 +334,8 @@ menu:
 						gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
 						end = clock();
 						gpuTime = (end - start) / (double) CLOCKS_PER_SEC;
-						printf("%d;%d;%lld;%lld;%lu;%lf\n", getGridSize(), getBlockSize(), *p, *q, (unsigned long) (end - start), gpuTime);
-						fprintf(statOutput, "%d;%d;%lld;%lld;%lu;%lf\n", getGridSize(), getBlockSize(), *p, *q, (unsigned long) (end - start), gpuTime);
+						printf("%lld;%d;%d;%lld;%lld;%lu;%lf\n", *n, getGridSize(), getBlockSize(), *p, *q, (unsigned long) (end - start), gpuTime);
+						fprintf(statOutput, "%lld;%d;%d;%lld;%lld;%lu;%lf\n", *n, getGridSize(), getBlockSize(), *p, *q, (unsigned long) (end - start), gpuTime);
 						*p = 1;
 						*q = 1;
 					}
