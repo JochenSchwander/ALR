@@ -291,10 +291,10 @@ menu:
 				fprintf(statOutput, "%lf;", gpuTime);
 				// log result of CPU and GPU, calculate which is faster
 				if (cpuTime > gpuTime) {
-					printf("GPU %lf Sekunden | 	%lf mal schneller\n", cpuTime - gpuTime, cpuTime / gpuTime);
+					printf("GPU %lf Sekunden  |-> 	%lf mal schneller\n", cpuTime - gpuTime, cpuTime / gpuTime);
 					//fprintf(output, "GPU %lf Sekunden | %lf mal schneller\n", cpuTime - gpuTime, cpuTime / gpuTime);
 				} else {
-					printf("CPU %lf Sekunden | 	%lf mal schneller\n", gpuTime - cpuTime, gpuTime / cpuTime);
+					printf("CPU %lf Sekunden  |-> 	%lf mal schneller\n", gpuTime - cpuTime, gpuTime / cpuTime);
 					//fprintf(output, "CPU %lf Sekunden | %lf mal schneller\n", gpuTime - cpuTime, gpuTime / cpuTime);
 				}
 				fprintf(statOutput, "%lld;%lld;\n", *p, *q);
