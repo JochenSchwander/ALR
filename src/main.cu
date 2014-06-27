@@ -273,6 +273,9 @@ menu:
 				//fprintf(output, "%lf Sekunden		", cpuTime);
 				// log CPU time to statOutput
 				fprintf(statOutput, "%lf;", cpuTime);
+				// rest p and q for error detection!
+				*p = 1;
+				*q = 1;
 				// GPU calculation
 				start = clock();
 				gpu_pollard_p1_factorization(*n, p, q, primes, primes_length);
